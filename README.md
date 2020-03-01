@@ -49,6 +49,7 @@ In your code, replace
 2. `BlynkSimpleUIPEthernet.h`   with `BlynkSTM32UIPEthernet_WM.h`     for board using ENC28J60 `without SSL`
 
 For STM32 with built-in Ethernet, use 
+
 3. `BlynkSTM32BIEthernet_WM.h`
 
 
