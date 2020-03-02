@@ -4,13 +4,13 @@
 
 ### New Releases v1.0.0
 
-1. Add support to STM32 boards with built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
+1. Add support to STM32 boards with built-in Ethernet LAN8742A, ENC28J60 or W5x00 Ethernet shields
 
-- This is the new library, adding to the current Blynk_WiFiManager. It's designed to help you eliminate `hardcoding` your Blynk credentials in `STM32` boards using with Ethernet (Built-in, W5100, W5200, W5500, ENC28J60, etc). It's currently not supporting SSL and can not saved config dada to non-volatile memory (EEPROM, battery-saved SRAM, SPIFFS, etc.), will fix in next releases.
+- This is the new library, adding to the current Blynk_WiFiManager. It's designed to help you eliminate `hardcoding` your Blynk credentials in `STM32` boards using with Ethernet (Built-in LAN8742A, W5100, W5200, W5500, ENC28J60, etc). It's currently not supporting SSL and can not saved config dada to non-volatile memory (EEPROM, battery-saved SRAM, SPIFFS, etc.), will fix in next releases.
 - You can update Blynk Credentials any time you need to change via Configure Portal. Data to be saved in configurable locations in EEPROM.
 
 This library currently supports
-1. STM32 boards with built-in Ethernet such as :
+1. STM32 boards with built-in Ethernet LAN8742A such as :
   - ***Nucleo-144 (F429ZI, F767ZI)***
   - ***Discovery (STM32F746G-DISCOVERY)***
   - ***All STM32 Boards with Built-in Ethernet***, See [How To Use Built-in Ethernet](https://github.com/khoih-prog/EthernetWebServer_STM32/issues/1)
@@ -22,7 +22,7 @@ This library currently supports
 2. [`Blynk library 0.6.1 or later`](https://www.arduino.cc/en/guide/libraries#toc3)
 3. [`Arduino Core for STM32 1.8.0 or later`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32 (Use Arduino Board Manager)
 3. Depending on which Ethernet card you're using:
-   - [`STM32Ethernet library`](https://github.com/stm32duino/STM32Ethernet) for built-in Ethernet on (Nucleo-144, Discovery, etc.)
+   - [`STM32Ethernet library`](https://github.com/stm32duino/STM32Ethernet) for built-in Ethernet LAN8742A on (Nucleo-144, Discovery, etc.)
    - [`UIPEthernet library`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60
    - [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) for W5100, W5200 and W5500
 4. [`EthernetWebServer_STM32 library`](https://github.com/khoih-prog/EthernetWebServer_STM32)
@@ -48,7 +48,7 @@ In your code, replace
 1. `BlynkSimpleEthernet.h`      with `BlynkSTM32Ethernet_WM.h`        for board using W5100, W5200, W5500 `without SSL`
 2. `BlynkSimpleUIPEthernet.h`   with `BlynkSTM32UIPEthernet_WM.h`     for board using ENC28J60 `without SSL`
 
-For STM32 with built-in Ethernet, use 
+For STM32 with built-in Ethernet LAN8742A, use 
 
 3. `BlynkSTM32BIEthernet_WM.h`
 
@@ -137,9 +137,9 @@ void loop()
  4. If the config data not entered completely (Server, HardwarePort and Blynk token), entering config portal
  5. Change Synch XMLHttpRequest to Async
  6. Reduce memory usage.
- 7. Support W5x00, ENC28J60 Ethernet shield as well as built-in Ethernet
+ 7. Support W5x00, ENC28J60 Ethernet shield as well as built-in Ethernet LAN8742A
  8. Add checksum
- 9. Support STM32 boards
+ 9. Support STM32 boards using built-in Ethernet LAN8742A or Ethernet shields
 
 ## TO DO
  1. Make simulated EEPROM work on all STM32 boards
