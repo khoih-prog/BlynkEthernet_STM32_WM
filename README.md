@@ -2,11 +2,7 @@
 
 [![arduino-library-badge](https://www.ardu-badge.com/badge/BlynkEthernet_STM32_WM.svg?)](https://www.ardu-badge.com/BlynkEthernet_STM32_WM)
 
-### New Releases v1.0.0
-
-1. Add support to STM32 boards with built-in Ethernet LAN8742A, ENC28J60 or W5x00 Ethernet shields
-
-- This is the new library, adding to the current Blynk_WiFiManager. It's designed to help you eliminate `hardcoding` your Blynk credentials in `STM32` boards using with Ethernet (Built-in LAN8742A, W5100, W5200, W5500, ENC28J60, etc). It's currently not supporting SSL and can not saved config dada to non-volatile memory (EEPROM, battery-saved SRAM, SPIFFS, etc.), will fix in next releases.
+- This is the new library, adding to the current Blynk_WiFiManager. It's designed to help you eliminate `hardcoding` your Blynk credentials in `STM32` boards using with Ethernet (Built-in LAN8742A, W5100, W5200, W5500, ENC28J60, etc). It's currently not supporting SSL and can not saved config dada to non-volatile memory (EEPROM, battery-saved SRAM, SPIFFS, etc.). To be fixed in future releases.
 - You can update Blynk Credentials any time you need to change via Configure Portal. Data to be saved in configurable locations in EEPROM.
 
 This library currently supports
@@ -18,7 +14,7 @@ This library currently supports
 3. ***STM32 boards (with 64+K Flash) running W5x00 shields***
 
 ## Prerequisite
-1. [`Arduino IDE 1.8.11 or later` for Arduino](https://www.arduino.cc/en/Main/Software)
+1. [`Arduino IDE 1.8.12 or later` for Arduino](https://www.arduino.cc/en/Main/Software)
 2. [`Blynk library 0.6.1 or later`](https://www.arduino.cc/en/guide/libraries#toc3)
 3. [`Arduino Core for STM32 1.8.0 or later`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32 (Use Arduino Board Manager)
 3. Depending on which Ethernet card you're using:
@@ -48,7 +44,7 @@ In your code, replace
 1. `BlynkSimpleEthernet.h`      with `BlynkSTM32Ethernet_WM.h`        for board using W5100, W5200, W5500 `without SSL`
 2. `BlynkSimpleUIPEthernet.h`   with `BlynkSTM32UIPEthernet_WM.h`     for board using ENC28J60 `without SSL`
 
-For STM32 with built-in Ethernet LAN8742A, use 
+For STM32 with built-in Ethernet, use 
 
 3. `BlynkSTM32BIEthernet_WM.h`
 
@@ -139,7 +135,7 @@ void loop()
  6. Reduce memory usage.
  7. Support W5x00, ENC28J60 Ethernet shield as well as built-in Ethernet LAN8742A
  8. Add checksum
- 9. Support STM32 boards using built-in Ethernet LAN8742A or Ethernet shields
+ 9. Support STM32 boards
 
 ## TO DO
  1. Make simulated EEPROM work on all STM32 boards
@@ -164,15 +160,15 @@ Please take a look at examples, as well.
   #define DEVICE_NAME  "STM32F4"
   #define BLYNK_NO_YIELD
 #elif defined(ARDUINO_ARCH_STM32F7)
-  #define DEVICE_NAME  "STM32F7"  
+  #define DEVICE_NAME  "STM32F7"
   #define BLYNK_NO_YIELD
 #else
-  #define DEVICE_NAME  "STM32 Unknown"  
+  #define DEVICE_NAME  "STM32 Unknown"
   #define BLYNK_NO_YIELD
 #endif
         
 
-#define USE_BUILTIN_ETHERNET    false
+#define USE_BUILTIN_ETHERNET    true
 //  If don't use USE_BUILTIN_ETHERNET, and USE_UIP_ETHERNET => use W5x00 with Ethernet library
 #define USE_UIP_ETHERNET        false 
 
@@ -259,7 +255,7 @@ void setup()
     Serial.print(F(", port = "));
     Serial.println(Blynk.getHWPort());
     Serial.print(F("Token = "));
-    Serial.println(Blynk.getToken());  
+    Serial.println(Blynk.getToken());
     #endif
     Serial.print(F("IP = "));
     Serial.println(Ethernet.localIP());
@@ -319,7 +315,7 @@ Start BI_Ethernet_Blynk on STM32 running Built-in STM32 Ethernet STM32 Unknown
 [6621] bg: No cfgdat. Stay
 [6621] CfgIP=192.168.2.94
 F[10938] SaveEEPROM,sz=16384,chkSum=0x19b4
-[10938] Hdr=W5100,Auth=****
+[10938] Hdr=LAN8742A,Auth=****
 [10941] Svr=account.duckdns.org,Port=8080
 [10945] SIP=nothing,BName=STM32-F767ZI-WM
 [10949] 
@@ -332,17 +328,22 @@ F[10938] SaveEEPROM,sz=16384,chkSum=0x19b4
 [10962] BlynkArduinoClient.connect: Connecting to account.duckdns.org:8080
 [10984] Ready (ping: 6ms).
 [11051] run: got E&B
-BBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
+BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
 BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
 BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
 BBBBBBBBBB BBBBBBBBBB BBBB
 ```
+### Releases v1.0.1
+
+***New in this version***
+
+1. Fix hanging bug in STM32 boards with built-in Ethernet LAN8742A.
 
 ### Releases v1.0.0
 
 ***New in this version***
 
-1. Add support to STM32 boards with built-in Ethernet, ENC28J60 or W5x00 Ethernet shields 
+1. Add support to STM32 boards with built-in Ethernet LAN8742A, ENC28J60 or W5x00 Ethernet shields 
 
 ## Contributing
 

@@ -1,13 +1,13 @@
 /****************************************************************************************************************************
  * BlynkSTM32Ethernet_WM.h
-* For STM32 running built-in Ethernet
+ * For STM32 running built-in Ethernet LAN8742A, ENC28J60 or W5x00 Ethernet shields
  *
- * BlynkSimpleEthernet_WM is a library for the AVR / Teensy platform to enable easy
- * configuration/reconfiguration and autoconnect/autoreconnect of Ethernet Shield W5x00/Blynk
+ * BlynkSTM32Ethernet_WM is a library for the STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
+ * to enable easy configuration/reconfiguration and autoconnect/autoreconnect to Blynk
  * Forked from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
  * Built by Khoi Hoang https://github.com/khoih-prog/BlynkGSM_ESPManager
  * Licensed under MIT license
- * Version: 1.0.0
+ * Version: 1.0.1
  *
  * Original Blynk Library author:
  * @file       BlynkGsmClient.h
@@ -20,6 +20,7 @@
  * Version Modified By   Date      Comments
  * ------- -----------  ---------- -----------
  *  1.0.0   K Hoang      28/02/2020 Initial coding for STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
+ *  1.0.1   K Hoang      03/03/2020 Fix bug for built-in Ethernet LAN8742A
  *****************************************************************************************************************************/
 
 #ifndef BlynkEthernet_STM32_WM_h
@@ -28,7 +29,7 @@
 #define BLYNK_ETHERNET_DEBUG      0
 
 #ifndef BLYNK_INFO_CONNECTION
-#define BLYNK_INFO_CONNECTION "W5000"
+#define BLYNK_INFO_CONNECTION "LAN8742A"
 #endif
 
 #ifdef BLYNK_USE_SSL
@@ -55,7 +56,7 @@
 
 // Configurable items besides fixed Header
 #define NUM_CONFIGURABLE_ITEMS    5
-struct Configuration 
+typedef struct Configuration 
 {
     char header         [16];
     char blynk_server   [32];
@@ -66,7 +67,7 @@ struct Configuration
     #if USE_CHECKSUM
     int  checkSum;
     #endif
-};
+} Blynk_Configuration;
 
 // Currently CONFIG_DATA_SIZE  =  132 with chksum, 128 wo chksum
 
@@ -176,13 +177,9 @@ public:
         BLYNK_LOG1(BLYNK_F("GetIP:"));
         #endif
         
-        #if 0   // NEW
-        Ethernet.begin();
-        #else
         if (! (ethernetConnected = Ethernet.begin(SelectMacAddress(auth, mac))) ) {
             BLYNK_FATAL(BLYNK_F("DHCP 0"));
         }
-        #endif
         
         // give the Ethernet shield a second to initialize:
         BlynkDelay(1000);
@@ -314,6 +311,8 @@ public:
     {       
         hadConfigData = getConfigData();
         
+        displayConfigData();
+        
         connectEthernet();       
                       
         if (hadConfigData)
@@ -354,7 +353,7 @@ public:
         {
             BLYNK_LOG1(BLYNK_F("bg: No cfgdat. Stay"));
             // failed to connect to Blynk server, will start configuration mode
-            hadConfigData = false;        
+            //hadConfigData = false;        
             startConfigurationMode();                  
         }
     }    
@@ -396,7 +395,6 @@ public:
 		        }
 		        else
 		        {
-              //BlynkReset();
               STM32Reset();
 		        }		        
 		      }
@@ -464,7 +462,7 @@ private:
     unsigned long configTimeout;
     bool hadConfigData = false;    
     
-    struct Configuration BlynkEthernet_WM_config;
+    Blynk_Configuration BlynkEthernet_WM_config;
 
 		#define RFC952_HOSTNAME_MAXLEN      24
 		char RFC952_hostname[RFC952_HOSTNAME_MAXLEN + 1];
@@ -528,7 +526,7 @@ private:
 #define WM_NO_CONFIG       "nothing"
     
 // Currently 128 + 4 (chsum)
-uint16_t CONFIG_DATA_SIZE = sizeof(struct Configuration);
+uint16_t CONFIG_DATA_SIZE = sizeof(Blynk_Configuration);
 
 
 #if USE_CHECKSUM
@@ -576,13 +574,12 @@ uint16_t CONFIG_DATA_SIZE = sizeof(struct Configuration);
       return t;
     }
 
-
     bool getConfigData()
     {     
       //EEPROM.begin();
       BLYNK_LOG2(BLYNK_F("EEPROM, sz:"), EEPROM.length());  
       //EEPROM.get(EEPROM_START, BlynkEthernet_WM_config);
-      EEPROM_get(EEPROM_START, BlynkEthernet_WM_config);
+      //EEPROM_get(EEPROM_START, BlynkEthernet_WM_config);
 
 #if USE_CHECKSUM
       int calChecksum = calcChecksum();
@@ -613,7 +610,7 @@ uint16_t CONFIG_DATA_SIZE = sizeof(struct Configuration);
           #endif
 
           //EEPROM.put(EEPROM_START, BlynkEthernet_WM_config);
-          EEPROM_put(EEPROM_START, BlynkEthernet_WM_config);
+          //EEPROM_put(EEPROM_START, BlynkEthernet_WM_config);
           
           return false;
       }  
@@ -636,13 +633,14 @@ uint16_t CONFIG_DATA_SIZE = sizeof(struct Configuration);
       #if USE_CHECKSUM
       int calChecksum = calcChecksum();
       BlynkEthernet_WM_config.checkSum = calChecksum;    
-      BLYNK_LOG4(BLYNK_F("SaveEEPROM,sz="), EEPROM.length(), BLYNK_F(",chkSum=0x"), String(calChecksum, HEX));
+      //BLYNK_LOG4(BLYNK_F("SaveEEPROM,sz="), EEPROM.length(), BLYNK_F(",chkSum=0x"), String(calChecksum, HEX));
+      BLYNK_LOG2(BLYNK_F("SaveEEPROM, chkSum=0x"), String(calChecksum, HEX));
       #endif
       
       displayConfigData();
       
       //EEPROM.put(EEPROM_START, BlynkEthernet_WM_config);
-      EEPROM_put(EEPROM_START, BlynkEthernet_WM_config);
+      //EEPROM_put(EEPROM_START, BlynkEthernet_WM_config);
     }
     
 
@@ -758,7 +756,7 @@ uint16_t CONFIG_DATA_SIZE = sizeof(struct Configuration);
             STM32Reset();
           #else
             config(BlynkEthernet_WM_config.blynk_token, BlynkEthernet_WM_config.blynk_server, BlynkEthernet_WM_config.blynk_port);
-            while(this->connect() != true) {}
+            this->connect();
           #endif
         }  
       }     // if (server)
@@ -775,7 +773,6 @@ uint16_t CONFIG_DATA_SIZE = sizeof(struct Configuration);
     void startConfigurationMode()
     {   
       #define CONFIG_TIMEOUT			60000L
-      //connectEthernet();  
                 
 	    BLYNK_LOG2(BLYNK_F("CfgIP="), Ethernet.localIP() );
 	    
@@ -804,41 +801,29 @@ uint16_t CONFIG_DATA_SIZE = sizeof(struct Configuration);
     {
       // Check go see if static IP is required
       IPAddress staticIP;
-      if (hadConfigData)
-      {      
-        if (staticIP.fromString(BlynkEthernet_WM_config.static_IP))
-        {
-          // Use static IP      
-          Ethernet.begin(SelectMacAddress(BlynkEthernet_WM_config.blynk_token, NULL), staticIP);
-          BLYNK_LOG1(BLYNK_F("Static IP"));
-          ethernetConnected = true;
-        }
-        else
-        {
-          ethernetConnected = Ethernet.begin(SelectMacAddress(BlynkEthernet_WM_config.blynk_token, NULL));
-          // If static_IP ="nothing"  or NULL, use DHCP dynamic IP
-          //ethernetConnected = true;
-          
-          if (ethernetConnected)
-            BLYNK_LOG1(BLYNK_F("Dynamic IP OK, connected"));
-        }
+      
+      if (staticIP.fromString(BlynkEthernet_WM_config.static_IP))
+      {
+        // Use static IP      
+        Ethernet.begin(SelectMacAddress(BlynkEthernet_WM_config.blynk_token, NULL), staticIP);
+        BLYNK_LOG1(BLYNK_F("Static IP"));
+        ethernetConnected = true;
       }
-      #if (USE_BUILTIN_ETHERNET)
       else
-      { 
-        ethernetConnected = Ethernet.begin();
-      }
-      #endif
+      {       
+        ethernetConnected = Ethernet.begin(SelectMacAddress(BlynkEthernet_WM_config.blynk_token, NULL));
+        
+        if (ethernetConnected)
+          BLYNK_LOG1(BLYNK_F("Dynamic IP OK, connected"));
+      }   
 
       // give the Ethernet shield a second to initialize:
       BlynkDelay(1000);
-              
-      BLYNK_LOG1(BLYNK_F("GetIP:"));
-      
+                   
       if (ethernetConnected) 
-      {                      
+      {                     
         IPAddress myip = Ethernet.localIP();
-        BLYNK_LOG_IP("IP:", myip);  
+        BLYNK_LOG_IP("IP:", myip);         
       }  
       else
       {
@@ -849,7 +834,7 @@ uint16_t CONFIG_DATA_SIZE = sizeof(struct Configuration);
             BLYNK_LOG1(BLYNK_F("Bad Ecable."));
           }
       }
-      
+            
       return ethernetConnected;
     }
     
@@ -868,12 +853,13 @@ uint16_t CONFIG_DATA_SIZE = sizeof(struct Configuration);
 
         int len = strlen(token);
         int mac_index = 1;
-        for (int i=0; i<len; i++) {
-            macAddress[mac_index++] ^= token[i];
+        for (int i=0; i<len; i++) 
+        {
+            macAddress[mac_index++] ^= (token[i] % 0x10);
 
             if (mac_index > 5) { mac_index = 1; }
         }
-         BLYNK_LOG("MAC: %02X-%02X-%02X-%02X-%02X-%02X",
+        BLYNK_LOG("MAC: %02X-%02X-%02X-%02X-%02X-%02X",
                   macAddress[0], macAddress[1],
                   macAddress[2], macAddress[3],
                   macAddress[4], macAddress[5]);

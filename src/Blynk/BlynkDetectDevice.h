@@ -1,4 +1,15 @@
-/**
+/****************************************************************************************************************************
+ * BlynkDetectDevice.h
+ * For STM32 running built-in Ethernet LAN8742A, ENC28J60 or W5x00 Ethernet shields
+ *
+ * BlynkSTM32Ethernet_WM is a library for the STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
+ * to enable easy configuration/reconfiguration and autoconnect/autoreconnect to Blynk
+ * Forked from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
+ * Built by Khoi Hoang https://github.com/khoih-prog/BlynkGSM_ESPManager
+ * Licensed under MIT license
+ * Version: 1.0.1
+ *
+ * Original Blynk Library author:
  * @file       BlynkDetectDevice.h
  * @author     Volodymyr Shymanskyy
  * @license    This project is released under the MIT License (MIT)
@@ -6,7 +17,11 @@
  * @date       May 2016
  * @brief
  *
- */
+ * Version Modified By   Date      Comments
+ * ------- -----------  ---------- -----------
+ *  1.0.0   K Hoang      28/02/2020 Initial coding for STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
+ *  1.0.1   K Hoang      03/03/2020 Fix bug for built-in Ethernet LAN8742A
+ *****************************************************************************************************************************/
 
 #ifndef BlynkDetectDevice_h
 #define BlynkDetectDevice_h
