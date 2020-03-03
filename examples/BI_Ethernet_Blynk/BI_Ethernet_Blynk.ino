@@ -96,10 +96,8 @@
   #define USE_LOCAL_SERVER      true
 
   #if USE_LOCAL_SERVER
-    //char auth[] = "******";
-    char auth[] = "n1u-uhfrc0chbmLRqSjl8SjphkGfHRTN";
-    //char server[] = "account.duckdns.org";
-    char server[] = "khoih.duckdns.org";
+    char auth[] = "******";
+    char server[] = "account.duckdns.org";
     //char server[] = "192.168.2.112";
   #else
     char auth[] = "******";
