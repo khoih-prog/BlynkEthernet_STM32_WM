@@ -845,19 +845,20 @@ uint16_t CONFIG_DATA_SIZE = sizeof(Blynk_Configuration);
         }
 
         macAddress[0] = 0xFE;
-        macAddress[1] = 0xED;
-        macAddress[2] = 0xBA;
-        macAddress[3] = 0xFE;
-        macAddress[4] = 0xFE;
-        macAddress[5] = 0xED;
-
+        macAddress[1] = 0xAB;
+        macAddress[2] = 0xCD;
+        macAddress[3] = 0xEF;
+        macAddress[4] = 0xBA;
+        macAddress[5] = 0xDC;
+        
         int len = strlen(token);
         int mac_index = 1;
+        
         for (int i=0; i<len; i++) 
         {
-            macAddress[mac_index++] ^= (token[i] % 0x10);
+            macAddress[mac_index] ^= token[i];
 
-            if (mac_index > 5) { mac_index = 1; }
+            if (++mac_index > 5) { mac_index = 1; }
         }
         BLYNK_LOG("MAC: %02X-%02X-%02X-%02X-%02X-%02X",
                   macAddress[0], macAddress[1],
