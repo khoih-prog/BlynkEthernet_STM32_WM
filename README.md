@@ -34,7 +34,7 @@ The suggested way to install is to:
 
 #### Use Arduino Library Manager
 The best way is to use `Arduino Library Manager`. Search for `BlynkEthernet_STM32_Manager`, then select / install the latest version. 
-You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/badge/BlynkEthernet_STM32_Manager.svg?)](https://www.ardu-badge.com/BlynkEthernet_STM32_Manager) for more detailed instructions.
+You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/badge/BlynkEthernet_STM32_WM.svg?)](https://www.ardu-badge.com/BlynkEthernet_STM32_WM) for more detailed instructions.
 
 #### Manual Install
 
