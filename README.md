@@ -97,11 +97,38 @@ Enter your credentials (Blynk Server and Port). If you prefer static IP, input i
     <img src="https://github.com/khoih-prog/BlynkEthernet_STM32_WM/blob/master/pics/Selection_3.png">
 </p>
 
-Then click `Save`. After the  board auto-restarted, you will see if it's connected to your Blynk server successfully as in  the following picture:
+Then click `Save`. After the  board auto-restarted, you will see if it's connected to your Blynk server successfully as in  the following screen:
 
-<p align="center">
-    <img src="https://github.com/khoih-prog/BlynkEthernet_STM32_WM/blob/master/pics/Selection_4.png">
-</p>
+```
+Start BI_Ethernet_Blynk on STM32F7 board, running Built-in LAN8742A Ethernet
+[1] EEPROM, sz:16384
+[3] CCksum=0x0,RCksum=0x0
+[5] InitEEPROM
+[7] Hdr=LAN8742A,Auth=nothing
+[10] Svr=nothing,Port=8080
+[12] SIP=nothing,BName=nothing
+[15] MAC: FE-AB-C5-9B-D2-B5
+[7329] Dynamic IP OK, connected
+[8329] IP:192.168.2.116
+[8329] bg: No cfgdat. Stay
+F[10576] SaveEEPROM, chkSum=0x1b9a
+[10576] Hdr=LAN8742A,Auth=n1u-uhfrc0chbmLRqSjl8SjphkGfHRTN
+[10579] Svr=khoih.duckdns.org,Port=8080
+[10583] SIP=nothing,BName=STM32-F767ZI-WM
+[10587] 
+    ___  __          __
+   / _ )/ /_ _____  / /__
+  / _  / / // / _ \/  '_/
+ /____/_/\_, /_//_/_/\_\
+        /___/ v0.6.1 on Arduino
+
+[10600] BlynkArduinoClient.connect: Connecting to khoih.duckdns.org:8080
+[10682] Ready (ping: 4ms).
+[10749] run: got E&B
+BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
+BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
+```
+
 
 This `Blynk.begin()` is not a blocking call, so you can use it for critical functions requiring in loop(). 
 Anyway, this is better for projects using Blynk just for GUI (graphical user interface).
