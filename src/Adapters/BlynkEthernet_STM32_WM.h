@@ -7,7 +7,7 @@
    Forked from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
    Built by Khoi Hoang https://github.com/khoih-prog/BlynkGSM_ESPManager
    Licensed under MIT license
-   Version: 1.0.1
+   Version: 1.0.2
 
    Original Blynk Library author:
    @file       BlynkGsmClient.h
@@ -21,10 +21,13 @@
    ------- -----------  ---------- -----------
     1.0.0   K Hoang      28/02/2020 Initial coding for STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
     1.0.1   K Hoang      03/03/2020 Fix bug for built-in Ethernet LAN8742A
+    1.0.2   K Hoang      06/03/2020 Fix crashing bug when using dynamic EthernetServer
  *****************************************************************************************************************************/
 
 #ifndef BlynkEthernet_STM32_WM_h
 #define BlynkEthernet_STM32_WM_h
+
+#define USE_STATIC_SERVER         true
 
 #define BLYNK_ETHERNET_DEBUG      0
 
@@ -317,6 +320,8 @@ class BlynkEthernet
 
       if (hadConfigData)
       {
+        connectEthernet();
+
         config( BlynkEthernet_WM_config.blynk_token,
                 BlynkEthernet_WM_config.blynk_server,
                 BlynkEthernet_WM_config.blynk_port);
@@ -377,8 +382,16 @@ class BlynkEthernet
         {
           retryTimes = 0;
 
+#if !USE_STATIC_SERVER
           if (server)
+#endif
+          {
+#if USE_STATIC_SERVER
+            server.handleClient();
+#else
             server->handleClient();
+#endif
+          }
 
           return;
         }
@@ -453,7 +466,11 @@ class BlynkEthernet
     // Initialize the Ethernet server library
     // with the IP address and port you want to use
     // (port 80 is default for HTTP):
+#if USE_STATIC_SERVER
+    EthernetWebServer server;
+#else
     EthernetWebServer *server;
+#endif
 
     bool ethernetConnected = false;
 
@@ -547,6 +564,7 @@ class BlynkEthernet
     {
       //EEPtr e = idx;
       int e = idx;
+      //uint8_t *e = (uint8_t *) ( idx/*+ BKPSRAM_BASE*/ );
       uint8_t *ptr = (uint8_t *) &t;
 
       for (int count = sizeof(T) ; count ; --count, ++e)
@@ -561,11 +579,13 @@ class BlynkEthernet
     {
       //EEPtr e = idx;
       int e = idx;
+      //uint8_t *e = (uint8_t *) ( idx /*+ BKPSRAM_BASE*/ );
       const uint8_t *ptr = (const uint8_t *) &t;
 
       for (int count = sizeof(T) ; count ; --count, ++e)
       {
         //(*e).update(*ptr++);
+        //*e = *ptr++;
         eeprom_buffered_write_byte(e, *ptr++);
       }
 
@@ -576,10 +596,10 @@ class BlynkEthernet
 
     bool getConfigData()
     {
-      //EEPROM.begin();
+      EEPROM.begin();
       BLYNK_LOG2(BLYNK_F("EEPROM, sz:"), EEPROM.length());
       //EEPROM.get(EEPROM_START, BlynkEthernet_WM_config);
-      //EEPROM_get(EEPROM_START, BlynkEthernet_WM_config);
+      EEPROM_get(EEPROM_START, BlynkEthernet_WM_config);
 
 #if USE_CHECKSUM
       int calChecksum = calcChecksum();
@@ -610,7 +630,7 @@ class BlynkEthernet
 #endif
 
         //EEPROM.put(EEPROM_START, BlynkEthernet_WM_config);
-        //EEPROM_put(EEPROM_START, BlynkEthernet_WM_config);
+        EEPROM_put(EEPROM_START, BlynkEthernet_WM_config);
 
         return false;
       }
@@ -640,16 +660,23 @@ class BlynkEthernet
       displayConfigData();
 
       //EEPROM.put(EEPROM_START, BlynkEthernet_WM_config);
-      //EEPROM_put(EEPROM_START, BlynkEthernet_WM_config);
+      EEPROM_put(EEPROM_START, BlynkEthernet_WM_config);
     }
 
 
     void handleRequest()
     {
+#if !USE_STATIC_SERVER
       if (server)
+#endif
       {
+#if USE_STATIC_SERVER
+        String key = server.arg("key");
+        String value = server.arg("value");
+#else
         String key = server->arg("key");
         String value = server->arg("value");
+#endif
 
         static int number_items_Updated = 0;
 
@@ -670,7 +697,11 @@ class BlynkEthernet
           result.replace("[[s_ip]]",      BlynkEthernet_WM_config.static_IP);
           result.replace("[[b_nam]]",     BlynkEthernet_WM_config.board_name);
 
+#if USE_STATIC_SERVER
+          server.send(200, "text/html", result);
+#else
           server->send(200, "text/html", result);
+#endif
 
           return;
         }
@@ -737,8 +768,11 @@ class BlynkEthernet
 #if (BLYNK_ETHERNET_DEBUG > 2)
         BLYNK_LOG1(BLYNK_F("hR: OK"));
 #endif
-
+#if USE_STATIC_SERVER
+        server.send(200, "text/html", "OK");
+#else
         server->send(200, "text/html", "OK");
+#endif
 
         if (number_items_Updated == NUM_CONFIGURABLE_ITEMS)
         {
@@ -762,6 +796,23 @@ class BlynkEthernet
       }     // if (server)
     }
 
+#if 0
+    uint32_t lastInterruptReg;
+
+    void STM32_disableInterrupt()
+    {
+      lastInterruptReg = RCC->CIR;
+      /* Disable all interrupts */
+      RCC->CIR = 0x00000000;
+    }
+
+    void STM32_enableInterrupt()
+    {
+      /* Restore interrupts */
+      RCC->CIR = lastInterruptReg;
+    }
+#endif
+
     void STM32Reset()
     {
       // Initialize the IWDG with 2 seconds timeout.
@@ -774,19 +825,32 @@ class BlynkEthernet
     {
 #define CONFIG_TIMEOUT			60000L
 
-      BLYNK_LOG2(BLYNK_F("CfgIP="), Ethernet.localIP() );
+      //BLYNK_LOG2(BLYNK_F("CfgIP="), Ethernet.localIP() );
 
+#if !USE_STATIC_SERVER
       if (!server)
+      {
         server = new EthernetWebServer;
+      }
+#endif
 
       //See https://stackoverflow.com/questions/39803135/c-unresolved-overloaded-function-type?rq=1
 
+#if !USE_STATIC_SERVER
       if (server)
+#endif
       {
+#if USE_STATIC_SERVER
+        server.on("/", [this]() {
+          handleRequest();
+        });
+        server.begin();
+#else
         server->on("/", [this]() {
           handleRequest();
         });
         server->begin();
+#endif
       }
 
       // If there is no saved config Data, stay in config mode forever until having config Data.
@@ -816,7 +880,9 @@ class BlynkEthernet
         ethernetConnected = Ethernet.begin(SelectMacAddress(BlynkEthernet_WM_config.blynk_token, NULL));
 
         if (ethernetConnected)
+        {
           BLYNK_LOG1(BLYNK_F("Dynamic IP OK, connected"));
+        }
       }
 
       // give the Ethernet shield a second to initialize:

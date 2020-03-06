@@ -2,6 +2,11 @@
 
 [![arduino-library-badge](https://www.ardu-badge.com/badge/BlynkEthernet_STM32_WM.svg?)](https://www.ardu-badge.com/BlynkEthernet_STM32_WM)
 
+### New in Version v1.0.2
+
+1. Fix crashing bug when using dynamic EthernetServer
+2. Enhance examples, fix indentation, update README.md
+
 - This is the new library, adding to the current Blynk_WiFiManager. It's designed to help you eliminate `hardcoding` your Blynk credentials in `STM32` boards using with Ethernet (Built-in LAN8742A, W5100, W5200, W5500, ENC28J60, etc). It's currently not supporting SSL and can not saved config dada to non-volatile memory (EEPROM, battery-saved SRAM, SPIFFS, etc.). To be fixed in future releases.
 - You can update Blynk Credentials any time you need to change via Configure Portal. Data to be saved in configurable locations in EEPROM.
 
@@ -28,7 +33,8 @@ This library currently supports
 The suggested way to install is to:
 
 #### Use Arduino Library Manager
-Another way is to use `Arduino Library Manager`. Search for `BlynkEthernet_STM32_Manager`, then select / install the latest version. You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/badge/BlynkEthernet_STM32_WM.svg?)](https://www.ardu-badge.com/BlynkEthernet_STM32_WM) for more detailed instructions.
+The best way is to use `Arduino Library Manager`. Search for `BlynkEthernet_STM32_Manager`, then select / install the latest version. 
+You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/badge/BlynkEthernet_STM32_Manager.svg?)](https://www.ardu-badge.com/BlynkEthernet_STM32_Manager) for more detailed instructions.
 
 #### Manual Install
 
@@ -139,46 +145,54 @@ void loop()
 
 ## TO DO
  1. Make simulated EEPROM work on all STM32 boards
+ 2. Find out why EthernetServer dynamic allocation creates random crashes when using Blynk_WM
 
 ## Example
 Please take a look at examples, as well.
 ```
-#if defined(ESP8266) || defined(ESP32)
-#error This code is designed to run on Arduino AVR, SAM, SAMD, Teensy platform, not ESP8266 nor ESP32! Please check your Tools->Board setting.
+#if defined(ESP8266) || defined(ESP32) || defined(AVR) || (ARDUINO_SAM_DUE)
+#error This code is designed to run on STM32 platform, not AVR, SAM DUE, SAMD, ESP8266 nor ESP32! Please check your Tools->Board setting.
 #endif
 
 /* Comment this out to disable prints and save space */
 #define BLYNK_PRINT Serial
-
-#if defined(ARDUINO_ARCH_STM32F1)
-  #define DEVICE_NAME  "STM32F1"
-  #define BLYNK_NO_YIELD
-#elif defined(ARDUINO_ARCH_STM32F3)
-  #define DEVICE_NAME  "STM32F3"
-  #define BLYNK_NO_YIELD
-#elif defined(ARDUINO_ARCH_STM32F4)
-  #define DEVICE_NAME  "STM32F4"
-  #define BLYNK_NO_YIELD
-#elif defined(ARDUINO_ARCH_STM32F7)
-  #define DEVICE_NAME  "STM32F7"
-  #define BLYNK_NO_YIELD
-#else
-  #define DEVICE_NAME  "STM32 Unknown"
-  #define BLYNK_NO_YIELD
-#endif
-        
 
 #define USE_BUILTIN_ETHERNET    true
 //  If don't use USE_BUILTIN_ETHERNET, and USE_UIP_ETHERNET => use W5x00 with Ethernet library
 #define USE_UIP_ETHERNET        false 
 
 #if (USE_BUILTIN_ETHERNET)
-  #define ETHERNET_NAME     "Built-in STM32 Ethernet"
+  #define ETHERNET_NAME     "Built-in LAN8742A Ethernet"
 #elif (USE_UIP_ETHERNET)
   #define ETHERNET_NAME     "ENC28J60 Ethernet Shield"
 #else
   #define ETHERNET_NAME     "W5x00 Ethernet Shield"
 #endif
+
+#if defined(STM32F0)
+  #warning STM32F0 board selected
+  #define DEVICE_NAME  "STM32F0"
+#elif defined(STM32F1)
+  #warning STM32F1 board selected
+  #define DEVICE_NAME  "STM32F1"
+#elif defined(STM32F2)
+  #warning STM32F2 board selected
+  #define DEVICE_NAME  "STM32F2"
+#elif defined(STM32F3)
+  #warning STM32F3 board selected
+  #define DEVICE_NAME  "STM32F3"
+#elif defined(STM32F4)
+  #warning STM32F4 board selected
+  #define DEVICE_NAME  "STM32F4"
+#elif defined(STM32F7)
+  #warning STM32F7 board selected
+  #define DEVICE_NAME  "STM32F7"
+#else
+  #warning STM32 unknown board selected
+  #define DEVICE_NAME  "STM32 Unknown"
+#endif
+
+#define BLYNK_NO_YIELD
 
 // Start location in EEPROM to store config data. Default 0.
 // Config data Size currently is 128 bytes w/o chksum, 132 with chksum)
@@ -203,6 +217,7 @@ Please take a look at examples, as well.
 #endif
 
 #define USE_BLYNK_WM      true
+//#define USE_BLYNK_WM      false
 
 #if !USE_BLYNK_WM
   #define USE_LOCAL_SERVER      true
@@ -228,7 +243,7 @@ void setup()
 {
   // Debug console
   Serial.begin(115200);
-  Serial.println("\nStart W5100_Blynk on STM32 running " + String(ETHERNET_NAME) + " " + String(DEVICE_NAME));
+  Serial.println("\nStart BI_Ethernet_Blynk on " + String(DEVICE_NAME) + " board, running " + String(ETHERNET_NAME));
 
 #if !(USE_BUILTIN_ETHERNET || USE_UIP_ETHERNET)
   pinMode(SDCARD_CS, OUTPUT);
@@ -306,33 +321,42 @@ void loop()
 The following is the sample terminal output when running example [BI_Ethernet_Blynk](examples/BI_Ethernet_Blynk) on Nucleo-144 F767ZI with built-in Ethernet PHY.
 
 ```
-Start BI_Ethernet_Blynk on STM32 running Built-in STM32 Ethernet STM32 Unknown
+Start BI_Ethernet_Blynk on STM32F7 board, running Built-in LAN8742A Ethernet
 [1] EEPROM, sz:16384
 [3] CCksum=0x0,RCksum=0x0
-[6] InitEEPROM
-[6621] GetIP:
-[6621] IP:192.168.2.94
-[6621] bg: No cfgdat. Stay
-[6621] CfgIP=192.168.2.94
-F[10938] SaveEEPROM,sz=16384,chkSum=0x19b4
-[10938] Hdr=LAN8742A,Auth=****
-[10941] Svr=account.duckdns.org,Port=8080
-[10945] SIP=nothing,BName=STM32-F767ZI-WM
-[10949] 
+[5] InitEEPROM
+[7] Hdr=LAN8742A,Auth=nothing
+[10] Svr=nothing,Port=8080
+[12] SIP=nothing,BName=nothing
+[15] MAC: FE-AB-C5-9B-D2-B5
+[7324] Dynamic IP OK, connected
+[8324] IP:192.168.2.116
+[8324] bg: No cfgdat. Stay
+F[12927] SaveEEPROM, chkSum=0x1b9a
+[12927] Hdr=LAN8742A,Auth=****
+[12930] Svr=account.duckdns.org,Port=8080
+[12933] SIP=nothing,BName=STM32-F767ZI-WM
+[12937] 
     ___  __          __
    / _ )/ /_ _____  / /__
   / _  / / // / _ \/  '_/
  /____/_/\_, /_//_/_/\_\
         /___/ v0.6.1 on Arduino
 
-[10962] BlynkArduinoClient.connect: Connecting to account.duckdns.org:8080
-[10984] Ready (ping: 6ms).
-[11051] run: got E&B
+[12950] BlynkArduinoClient.connect: Connecting to account.duckdns.org:8080
+[13030] Ready (ping: 4ms).
+[13097] run: got E&B
 BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
 BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
 BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
 BBBBBBBBBB BBBBBBBBBB BBBB
 ```
+
+### New in Version v1.0.2
+
+1. Fix crashing bug when using dynamic EthernetServer
+2. Enhance examples, fix indentation, update README.md
+
 ### Releases v1.0.1
 
 ***New in this version***
