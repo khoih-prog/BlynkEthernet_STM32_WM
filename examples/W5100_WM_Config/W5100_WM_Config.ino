@@ -7,7 +7,7 @@
    Forked from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
    Built by Khoi Hoang https://github.com/khoih-prog/BlynkGSM_ESPManager
    Licensed under MIT license
-   Version: 1.0.2
+   Version: 1.0.3
 
    Original Blynk Library author:
    @file       BlynkGsmClient.h
@@ -22,10 +22,11 @@
     1.0.0   K Hoang      28/02/2020 Initial coding for STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
     1.0.1   K Hoang      03/03/2020 Fix bug for built-in Ethernet LAN8742A
     1.0.2   K Hoang      06/03/2020 Fix crashing bug when using dynamic EthernetServer
+    1.0.3   K Hoang      10/03/2020 Reduce html and code size
  *****************************************************************************************************************************/
 
-#if defined(ESP8266) || defined(ESP32) || defined(AVR) || (ARDUINO_SAM_DUE)
-#error This code is designed to run on STM32 platform, not AVR, SAM DUE, SAMD, ESP8266 nor ESP32! Please check your Tools->Board setting.
+#if defined(ESP8266) || defined(ESP32) || defined(AVR) || (ARDUINO_SAM_DUE) || defined(CORE_TEENSY)
+#error This code is designed to run on STM32 platform, not AVR, Teensy, SAM DUE, SAMD, ESP8266 nor ESP32! Please check your Tools->Board setting.
 #endif
 
 /* Comment this out to disable prints and save space */
