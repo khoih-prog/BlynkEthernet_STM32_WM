@@ -77,48 +77,13 @@ typedef struct Configuration
 
 #define root_html_template "\
 <!DOCTYPE html>\
-<html>\
-<head>\
-<title>BlynkEthernetSTM32_WM</title>\
-</head>\
-<body>\
-<div align=\"center\">\
-<table>\
-<tbody>\
-<tr>\
-<th colspan=\"2\">Blynk</th>\
-</tr>\
-<tr>\
-<td>Server</td>\
-<td><input type=\"text\" value=\"[[sv]]\" id=\"sv\"></td>\
-</tr>\
-<tr>\
-<td>Port</td>\
-<td><input type=\"text\" value=\"[[pt]]\" id=\"pt\"></td>\
-</tr>\
-<tr>\
-<td>Token</td>\
-<td><input type=\"text\" value=\"[[tk]]\" id=\"tk\"></td>\
-</tr>\
-<tr>\
-<td>StaticIP</td>\
-<td><input type=\"text\" value=\"[[ip]]\" id=\"ip\"></td>\
-</tr>\
-<tr>\
-<th colspan=\"2\">Board</th>\
-</tr>\
-<tr>\
-<td>Name</td>\
-<td><input type=\"text\" value=\"[[nm]]\" id=\"nm\"></td>\
-</tr>\
-<tr>\
-<td colspan=\"2\" align=\"center\">\
-<button onclick=\"sv()\">Save</button>\
-</td>\
-</tr>\
-</tbody>\
-</table>\
-</div>\
+<html><head><title>BlynkEthernetSTM32_WM</title><style>.em{padding-bottom:0px;}div,input{padding:5px;font-size:1em;}input{width:95%;}\
+body{text-align: center;}button{background-color:#16A1E7;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%;}fieldset{border-radius:0.3rem;margin:0px;}\
+</style></head><div style=\"text-align:left;display:inline-block;min-width:260px;\"><fieldset><div class=\"\"><label for=\"sv\">Server</label>\
+<input type=\"text\"id=\"sv\"><div class=\"em\"></div></div><div class=\"\"><label for=\"pt\">Port</label><input id=\"pt\"><div class=\"em\"></div></div>\
+<div class=\"\"><label for=\"tk\">Token</label><input type=\"text\" id=\"tk\"><div class=\"em\"></div></div><div class=\"\"><label for=\"ip\">StaticIP</label>\
+<input id=\"ip\"><div class=\"em\"></div></div></fieldset><fieldset><div class=\"\"><label for=\"nm\">Name</label><input type=\"text\"id=\"nm\">\
+<div class=\"em\"></div></div></fieldset><button onclick=\"sv()\">Save</button></div>\
 <script id=\"jsbin-javascript\">\
 function udVal(key,val){\
 var request=new XMLHttpRequest();\

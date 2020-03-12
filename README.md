@@ -3,7 +3,7 @@
 [![arduino-library-badge](https://www.ardu-badge.com/badge/BlynkEthernet_STM32_WM.svg?)](https://www.ardu-badge.com/BlynkEthernet_STM32_WM)
 
 ### New in Version v1.0.3
-1. Reduce html and code size for faster Config Portal response
+1. Reduce html and code size for faster Config Portal response. Enhance GUI.
 2. Change default macAddress for boards to avoid macAddress conflict while simultaneously testing multiple boards.
 
 ### New in Version v1.0.2
