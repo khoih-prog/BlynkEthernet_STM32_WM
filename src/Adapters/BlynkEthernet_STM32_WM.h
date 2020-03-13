@@ -79,11 +79,19 @@ typedef struct Configuration
 <!DOCTYPE html>\
 <html><head><title>BlynkEthernetSTM32_WM</title><style>.em{padding-bottom:0px;}div,input{padding:5px;font-size:1em;}input{width:95%;}\
 body{text-align: center;}button{background-color:#16A1E7;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%;}fieldset{border-radius:0.3rem;margin:0px;}\
-</style></head><div style=\"text-align:left;display:inline-block;min-width:260px;\"><fieldset><div class=\"\"><label for=\"sv\">Server</label>\
-<input type=\"text\"id=\"sv\"><div class=\"em\"></div></div><div class=\"\"><label for=\"pt\">Port</label><input id=\"pt\"><div class=\"em\"></div></div>\
-<div class=\"\"><label for=\"tk\">Token</label><input type=\"text\" id=\"tk\"><div class=\"em\"></div></div><div class=\"\"><label for=\"ip\">StaticIP</label>\
-<input id=\"ip\"><div class=\"em\"></div></div></fieldset><fieldset><div class=\"\"><label for=\"nm\">Name</label><input type=\"text\"id=\"nm\">\
-<div class=\"em\"></div></div></fieldset><button onclick=\"sv()\">Save</button></div>\
+</style></head><div style=\"text-align:left;display:inline-block;min-width:260px;\">\
+<fieldset><div class=\"\"><label for=\"sv\">Server</label>\
+<input type=\"text\"value=\"[[sv]]\"id=\"sv\"><div class=\"em\"></div></div>\
+<div class=\"\"><label for=\"pt\">Port</label>\
+<input type=\"number\"value=\"[[pt]]\"id=\"pt\"><div class=\"em\"></div></div>\
+<div class=\"\"><label for=\"tk\">Token</label>\
+<input type=\"text\"value=\"[[tk]]\"id=\"tk\"><div class=\"em\"></div></div>\
+<div class=\"\"><label for=\"ip\">StaticIP</label>\
+<input type=\"text\"value=\"[[ip]]\"id=\"ip\"><div class=\"em\"></div></div></fieldset>\
+<fieldset><div class=\"\"><label for=\"nm\">Name</label>\
+<input type=\"text\"value=\"[[nm]]\"id=\"nm\">\
+<div class=\"em\"></div></div></fieldset>\
+<button onclick=\"sv()\">Save</button></div>\
 <script id=\"jsbin-javascript\">\
 function udVal(key,val){\
 var request=new XMLHttpRequest();\
