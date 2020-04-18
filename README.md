@@ -1,6 +1,10 @@
 ## BlynkEthernet_STM32_Manager
 
 [![arduino-library-badge](https://www.ardu-badge.com/badge/BlynkEthernet_STM32_WM.svg?)](https://www.ardu-badge.com/BlynkEthernet_STM32_WM)
+[![GitHub release](https://img.shields.io/github/release/khoih-prog/BlynkEthernet_STM32_WM.svg)](https://github.com/khoih-prog/BlynkEthernet_STM32_WM/releases)
+[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/khoih-prog/BlynkEthernet_STM32_WM/blob/master/LICENSE)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
+[![GitHub issues](https://img.shields.io/github/issues/khoih-prog/BlynkEthernet_STM32_WM.svg)](http://github.com/khoih-prog/BlynkEthernet_STM32_WM/issues)
 
 ### New in Version v1.0.3
 1. Reduce html and code size for faster Config Portal response. Enhance GUI.
