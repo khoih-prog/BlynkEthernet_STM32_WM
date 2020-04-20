@@ -6,6 +6,13 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/BlynkEthernet_STM32_WM.svg)](http://github.com/khoih-prog/BlynkEthernet_STM32_WM/issues)
 
+### Releases v1.0.4
+
+1. New ***powerful-yet-simple-to-use feature to enable adding dynamic custom parameters*** from sketch and input using the same Config Portal. Config Portal will be auto-adjusted to match the number of dynamic parameters.
+2. Dynamic custom parameters to be saved ***automatically in EEPROMe***.
+3. Permit to input special chars such as ***%*** and ***#*** into data fields.
+4. MultiBlynk Servers and Tokens with Auto(Re)Connect feature.
+
 ### New in Version v1.0.3
 1. Reduce html and code size for faster Config Portal response. Enhance GUI.
 2. Change default macAddress for boards to avoid macAddress conflict while simultaneously testing multiple boards.
@@ -52,16 +59,31 @@ You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/
 4. Copy whole 
   - `BlynkEthernet_STM32_WM-master/src` folder to Arduino libraries' directory such as `~/Arduino/libraries/`.
 
+### Important note
+
+1. Because using dynamic parameters requires HTML page for Config Portal larger than 2K, the current [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) must be modified if you are using W5100/W5200/W5500 Ethernet shields.
+2. To fix [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet), just copy these following files into the [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) directory to overwrite the old files:
+- [Ethernet.h](Ethernet/src/Ethernet.h)
+- [EthernetServer.cpp](Ethernet/src/EthernetServer.cpp)
+- [w5100.cpp](Ethernet/src/utility/w5100.cpp)
+
 ### How to use
 
 In your code, replace
 1. `BlynkSimpleEthernet.h`      with `BlynkSTM32Ethernet_WM.h`        for board using W5100, W5200, W5500 `without SSL`
 2. `BlynkSimpleUIPEthernet.h`   with `BlynkSTM32UIPEthernet_WM.h`     for board using ENC28J60 `without SSL`
 
-For STM32 with built-in Ethernet, use 
+3. For STM32 with built-in Ethernet, use 
 
-3. `BlynkSTM32BIEthernet_WM.h`
+ - `BlynkSTM32BIEthernet_WM.h` to use Blynk Manager feature (Config Portal, MultiBlynk, Dynamic Parameters, etc.)
+ - `BlynkSimple_STM32BI_Ethernet.h` to just use Blynk feature
 
+
+```
+// Start location to store config data to avoid conflict with other functions
+#define EEPROM_START   0
+
+```
 
 Then replace `Blynk.begin(...)` with :
 
@@ -70,6 +92,78 @@ Then replace `Blynk.begin(...)` with :
 in your code. Keep `Blynk.run()` intact.
 
 That's it.
+
+### How to add dynamic parameters from sketch
+
+- To add custom parameters, just modify from the example below
+
+```
+#define USE_DYNAMIC_PARAMETERS     true
+
+/////////////// Start dynamic Credentials ///////////////
+
+//Defined in <BlynkSimpleEsp8266_WM.h> and <BlynkSimpleEsp8266_SSL_WM.h>
+/**************************************
+  #define MAX_ID_LEN                5
+  #define MAX_DISPLAY_NAME_LEN      16
+
+  typedef struct
+  {
+  char id             [MAX_ID_LEN + 1];
+  char displayName    [MAX_DISPLAY_NAME_LEN + 1];
+  char *pdata;
+  uint8_t maxlen;
+  } MenuItem;
+**************************************/
+
+#if USE_DYNAMIC_PARAMETERS
+
+#define MAX_MQTT_SERVER_LEN      34
+char MQTT_Server  [MAX_MQTT_SERVER_LEN + 1]   = "";
+
+#define MAX_MQTT_PORT_LEN        6
+char MQTT_Port   [MAX_MQTT_PORT_LEN + 1]  = "";
+
+#define MAX_MQTT_USERNAME_LEN      34
+char MQTT_UserName  [MAX_MQTT_USERNAME_LEN + 1]   = "";
+
+#define MAX_MQTT_PW_LEN        34
+char MQTT_PW   [MAX_MQTT_PW_LEN + 1]  = "";
+
+#define MAX_MQTT_SUBS_TOPIC_LEN      34
+char MQTT_SubsTopic  [MAX_MQTT_SUBS_TOPIC_LEN + 1]   = "";
+
+#define MAX_MQTT_PUB_TOPIC_LEN       34
+char MQTT_PubTopic   [MAX_MQTT_PUB_TOPIC_LEN + 1]  = "";
+
+MenuItem myMenuItems [] =
+{
+  { "mqtt", "MQTT Server",      MQTT_Server,      MAX_MQTT_SERVER_LEN },
+  { "mqpt", "Port",             MQTT_Port,        MAX_MQTT_PORT_LEN   },
+  { "user", "MQTT UserName",    MQTT_UserName,    MAX_MQTT_USERNAME_LEN },
+  { "mqpw", "MQTT PWD",         MQTT_PW,          MAX_MQTT_PW_LEN },
+  { "subs", "Subs Topics",      MQTT_SubsTopic,   MAX_MQTT_SUBS_TOPIC_LEN },
+  { "pubs", "Pubs Topics",      MQTT_PubTopic,    MAX_MQTT_PUB_TOPIC_LEN },
+};
+
+uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSize;
+
+#else
+
+MenuItem myMenuItems [] = {};
+
+uint16_t NUM_MENU_ITEMS = 0;
+#endif
+
+
+/////// // End dynamic Credentials ///////////
+
+```
+- If you don't need to add dynamic parameters, use the following in sketch
+
+```
+#define USE_DYNAMIC_PARAMETERS     false
+```
 
 Also see examples: 
  1. [AM2315_W5100](examples/AM2315_W5100)
@@ -87,11 +181,28 @@ Also see examples:
 
 
 ## So, how it works?
-If no valid config data are stored in EEPROM, it will switch to `Configuration Mode`. Connect to access point at the IP address displayed on Terminal or Router's DHCP server as in the following picture:
+If no valid config data are stored in EEPROM, it will switch to `Configuration Mode`. Connect to access point at the IP address displayed on Terminal or Router's DHCP server as in the following terminal output:
 
-<p align="center">
-    <img src="https://github.com/khoih-prog/BlynkEthernet_STM32_WM/blob/master/pics/Selection_1.png">
-</p>
+```
+Start BI_Ethernet_Blynk on STM32F7 board, running Built-in LAN8742A Ethernet
+[1] EEPROMsz16384
+[3] CCSum=0x0,RCSum=0x0
+[5] CrCCsum=0,CrRCsum=0
+[7] InitEEPROM,sz=16384,Datasz=380
+[10] CrCCSum=3120
+[12] MAC: FE-C9-A1-8E-D4-B7
+[5629] Dynamic IP OK, connected
+[6629] IP:192.168.2.88
+[6629] bg:NoDat.Stay
+F
+Your stored Credentials :
+MQTT Server = blank
+Port = blank
+MQTT UserName = blank
+MQTT PWD = blank
+Subs Topics = blank
+Pubs Topics = blank
+```
 
 After you connected to, for example, `192.168.2.86`, the Browser will display the following picture:
 
@@ -105,11 +216,45 @@ Enter your credentials (Blynk Server and Port). If you prefer static IP, input i
     <img src="https://github.com/khoih-prog/BlynkEthernet_STM32_WM/blob/master/pics/Selection_3.png">
 </p>
 
-Then click `Save`. After the  board auto-restarted, you will see if it's connected to your Blynk server successfully as in  the following picture:
+Then click `Save`. After the  board auto-restarted, you will see if it's connected to your Blynk server successfully as in the following terminal output:
 
-<p align="center">
-    <img src="https://github.com/khoih-prog/BlynkEthernet_STM32_WM/blob/master/pics/Selection_4.png">
-</p>
+```
+Start BI_Ethernet_Blynk on STM32F7 board, running Built-in LAN8742A Ethernet
+[1] EEPROMsz16384
+[3] CCSum=0x0,RCSum=0x0
+[5] CrCCsum=0,CrRCsum=0
+[7] InitEEPROM,sz=16384,Datasz=380
+[10] CrCCSum=3120
+[12] MAC: FE-C9-A1-8E-D4-B7
+[5629] Dynamic IP OK, connected
+[6629] IP:192.168.2.88
+[6629] bg:NoDat.Stay
+Your stored Credentials :
+MQTT Server = blank
+Port = blank
+MQTT UserName = blank
+MQTT PWD = blank
+Subs Topics = blank
+Pubs Topics = blank
+FFFFFFFFFF FFFFFFFFFF
+Save,CSum=0x2c22
+[68929] Hdr=LAN8742A,BName=STM32F767ZIT6-Blynk-WM
+[68930] Svr=account.duckdns.org,Tok=tokentoken1a1nKgun10heJSu2G6KQUlJRGIOrVD0QX
+[68942] Prt=8080,SIP=192.168.2.88
+[68945] CrCCSum=8662
+[68947] 
+    ___  __          __
+   / _ )/ /_ _____  / /__
+  / _  / / // / _ \/  '_/
+ /____/_/\_, /_//_/_/\_\
+        /___/ v0.6.1 on Arduino
+
+[68961] BlynkArduinoClient.connect: Connecting to account.duckdns.org:8080
+[68982] Ready (ping: 7ms).
+[69049] Connected to Blynk Server = account.duckdns.org, Token = token
+[69052] r:E&B OK
+BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
+```
 
 This `Blynk.begin()` is not a blocking call, so you can use it for critical functions requiring in loop(). 
 Anyway, this is better for projects using Blynk just for GUI (graphical user interface).
@@ -137,8 +282,9 @@ void loop()
 
 ## TO DO
 
-1. Same features for other boards with Ethernet shields.
-2. To write code and make SSL working. Currently, Ethernet SSL is not supported by Blynk code yet.
+ 1. Same features for other boards with Ethernet shields.
+ 2. To write code and make SSL working. Currently, Ethernet SSL is not supported by Blynk code yet.
+ 3. Make simulated EEPROM work on all STM32 boards
 
 ## DONE
 
@@ -151,13 +297,14 @@ void loop()
  7. Support W5x00, ENC28J60 Ethernet shield as well as built-in Ethernet LAN8742A
  8. Add checksum
  9. Support STM32 boards
+10. Add MultiBlynk features with Auto(Re)Connect to the available Server.
+11. Easy-to-use Dynamic Parameters without the necessity to write complicated ArduinoJSon functions
+12. Permit to input special chars such as ***%*** and ***#*** into data fields. 
 
-## TO DO
- 1. Make simulated EEPROM work on all STM32 boards
- 2. Find out why EthernetServer dynamic allocation creates random crashes when using Blynk_WM
+## Example [BI_Ethernet_Blynk](examples/BI_Ethernet_Blynk) 
 
-## Example
-Please take a look at examples, as well.
+Please take a look at other examples, as well.
+
 ```
 #if defined(ESP8266) || defined(ESP32) || defined(AVR) || (ARDUINO_SAM_DUE) || defined(CORE_TEENSY)
 #error This code is designed to run on STM32 platform, not AVR, Teensy, SAM DUE, SAMD, ESP8266 nor ESP32! Please check your Tools->Board setting.
@@ -203,13 +350,18 @@ Please take a look at examples, as well.
 
 #define BLYNK_NO_YIELD
 
+#define USE_BLYNK_WM      true
+//#define USE_BLYNK_WM      false
+
+#define USE_DYNAMIC_PARAMETERS      true
+
 // Start location in EEPROM to store config data. Default 0.
 // Config data Size currently is 128 bytes w/o chksum, 132 with chksum)
 #define EEPROM_START     0
 
 #define USE_SSL     false
 
-#define USE_CHECKSUM      true
+#if USE_BLYNK_WM
 
 #if USE_SSL
 // Need ArduinoECCX08 and ArduinoBearSSL libraries
@@ -225,23 +377,89 @@ Please take a look at examples, as well.
 #endif
 #endif
 
-#define USE_BLYNK_WM      true
-//#define USE_BLYNK_WM      false
+/////////////// Start dynamic Credentials ///////////////
 
-#if !USE_BLYNK_WM
+//Defined in <BlynkEthernet_WM.h>
+/**************************************
+  #define MAX_ID_LEN                5
+  #define MAX_DISPLAY_NAME_LEN      16
+
+  typedef struct
+  {
+  char id             [MAX_ID_LEN + 1];
+  char displayName    [MAX_DISPLAY_NAME_LEN + 1];
+  char *pdata;
+  uint8_t maxlen;
+  } MenuItem;
+**************************************/
+
+#if USE_DYNAMIC_PARAMETERS
+
+#define MAX_MQTT_SERVER_LEN      34
+char MQTT_Server  [MAX_MQTT_SERVER_LEN + 1]   = "";
+
+#define MAX_MQTT_PORT_LEN        6
+char MQTT_Port   [MAX_MQTT_PORT_LEN + 1]  = "";
+
+#define MAX_MQTT_USERNAME_LEN      34
+char MQTT_UserName  [MAX_MQTT_USERNAME_LEN + 1]   = "";
+
+#define MAX_MQTT_PW_LEN        34
+char MQTT_PW   [MAX_MQTT_PW_LEN + 1]  = "";
+
+#define MAX_MQTT_SUBS_TOPIC_LEN      34
+char MQTT_SubsTopic  [MAX_MQTT_SUBS_TOPIC_LEN + 1]   = "";
+
+#define MAX_MQTT_PUB_TOPIC_LEN       34
+char MQTT_PubTopic   [MAX_MQTT_PUB_TOPIC_LEN + 1]  = "";
+
+MenuItem myMenuItems [] =
+{
+  { "mqtt", "MQTT Server",      MQTT_Server,      MAX_MQTT_SERVER_LEN },
+  { "mqpt", "Port",             MQTT_Port,        MAX_MQTT_PORT_LEN   },
+  { "user", "MQTT UserName",    MQTT_UserName,    MAX_MQTT_USERNAME_LEN },
+  { "mqpw", "MQTT PWD",         MQTT_PW,          MAX_MQTT_PW_LEN },
+  { "subs", "Subs Topics",      MQTT_SubsTopic,   MAX_MQTT_SUBS_TOPIC_LEN },
+  { "pubs", "Pubs Topics",      MQTT_PubTopic,    MAX_MQTT_PUB_TOPIC_LEN },
+};
+
+uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSize;
+
+#else
+
+MenuItem myMenuItems [] = {};
+
+uint16_t NUM_MENU_ITEMS = 0;
+#endif
+
+
+/////// // End dynamic Credentials ///////////
+
+#else   //USE_BLYNK_WM
+
+#if USE_BUILTIN_ETHERNET
+#include <BlynkSimple_STM32BI_Ethernet.h>
+#elif USE_UIP_ETHERNET
+#include <BlynkSimpleUIPEthernet.h>
+#else
+#include <BlynkSimpleEthernet.h>
+#endif
+
 #define USE_LOCAL_SERVER      true
 
 #if USE_LOCAL_SERVER
 char auth[] = "******";
 char server[] = "account.duckdns.org";
 //char server[] = "192.168.2.112";
+
 #else
 char auth[] = "******";
 char server[] = "blynk-cloud.com";
 #endif
 
 #define BLYNK_HARDWARE_PORT       8080
-#endif
+
+#endif    //USE_BLYNK_WM
 
 #if !(USE_BUILTIN_ETHERNET || USE_UIP_ETHERNET)
 #define W5100_CS  10
@@ -320,45 +538,96 @@ void check_status()
   }
 }
 
+#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
+void displayCredentials(void)
+{
+  Serial.println("\nYour stored Credentials :");
+
+  for (int i = 0; i < NUM_MENU_ITEMS; i++)
+  {
+    Serial.println(String(myMenuItems[i].displayName) + " = " + myMenuItems[i].pdata);
+  }
+}
+#endif
+
 void loop()
 {
   Blynk.run();
   check_status();
+
+#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
+  static bool displayedCredentials = false;
+
+  if (!displayedCredentials)
+  {
+    for (int i = 0; i < NUM_MENU_ITEMS; i++)
+    {
+      if (!strlen(myMenuItems[i].pdata))
+      {
+        break;
+      }
+
+      if ( i == (NUM_MENU_ITEMS - 1) )
+      {
+        displayedCredentials = true;
+        displayCredentials();
+      }
+    }
+  }
+#endif    
 }
 ```
 
 The following is the sample terminal output when running example [BI_Ethernet_Blynk](examples/BI_Ethernet_Blynk) on Nucleo-144 F767ZI with built-in Ethernet PHY.
 
 ```
-
 Start BI_Ethernet_Blynk on STM32F7 board, running Built-in LAN8742A Ethernet
-[1] EEPROM, sz:16384
+[1] EEPROMsz16384
 [3] CCSum=0x0,RCSum=0x0
-[5] InitEEPROM
-[7] MAC: FE-AB-C5-9B-D2-B5
-[5623] Dynamic IP OK, connected
-[6623] IP:192.168.2.116
-[6623] bg:No dat.Stay
-FF[96386] Save,cSum=0x1b33
-[96386] Hdr=LAN8742A,Tok=****
-[96388] Svr=****.duckdns.org,Port=8080
-[96392] SIP=192.168.2.225,BName=STM32-F767ZI-WM
-[96396] 
+[5] CrCCsum=0,CrRCsum=0
+[7] InitEEPROM,sz=16384,Datasz=380
+[10] CrCCSum=3120
+[12] MAC: FE-C9-A1-8E-D4-B7
+[5629] Dynamic IP OK, connected
+[6629] IP:192.168.2.88
+[6629] bg:NoDat.Stay
+Your stored Credentials :
+MQTT Server = blank
+Port = blank
+MQTT UserName = blank
+MQTT PWD = blank
+Subs Topics = blank
+Pubs Topics = blank
+FFFFFFFFFF FFFFFFFFFF
+Save,CSum=0x2c22
+[68929] Hdr=LAN8742A,BName=STM32F767ZIT6-Blynk-WM
+[68930] Svr=account.duckdns.org,Tok=tokentoken1a1nKgun10heJSu2G6KQUlJRGIOrVD0QX
+[68942] Prt=8080,SIP=192.168.2.88
+[68945] CrCCSum=8662
+[68947] 
     ___  __          __
    / _ )/ /_ _____  / /__
   / _  / / // / _ \/  '_/
  /____/_/\_, /_//_/_/\_\
         /___/ v0.6.1 on Arduino
 
-[96409] BlynkArduinoClient.connect: Connecting to ****.duckdns.org:8080
-[96490] Ready (ping: 4ms).
-[96557] run: got E&B
-
+[68961] BlynkArduinoClient.connect: Connecting to account.duckdns.org:8080
+[68982] Ready (ping: 7ms).
+[69049] Connected to Blynk Server = account.duckdns.org, Token = token
+[69052] r:E&B OK
 BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
 BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
 BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB
 BBBBBBBBBB BBBBBBBBBB BBBB
 ```
+
+### Releases v1.0.4
+
+1. New ***powerful-yet-simple-to-use feature to enable adding dynamic custom parameters*** from sketch and input using the same Config Portal. Config Portal will be auto-adjusted to match the number of dynamic parameters.
+2. Dynamic custom parameters to be saved ***automatically in EEPROMe***.
+3. Permit to input special chars such as ***%*** and ***#*** into data fields.
+4. MultiBlynk Servers and Tokens with Auto(Re)Connect feature.
+
 ### New in Version v1.0.3
 1. Reduce html and code size for faster Config Portal response.  Enhance GUI.
 2. Change default macAddress for boards to avoid macAddress conflict while simultaneously testing multiple boards.

@@ -7,7 +7,7 @@
    Forked from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
    Built by Khoi Hoang https://github.com/khoih-prog/BlynkGSM_ESPManager
    Licensed under MIT license
-   Version: 1.0.3
+   Version: 1.0.4
 
    Original Blynk Library author:
    @file       BlynkGsmClient.h
@@ -23,6 +23,7 @@
     1.0.1   K Hoang      03/03/2020 Fix bug for built-in Ethernet LAN8742A
     1.0.2   K Hoang      06/03/2020 Fix crashing bug when using dynamic EthernetServer
     1.0.3   K Hoang      10/03/2020 Reduce html and code size
+    1.0.4   K Hoang      20/04/2020 Add MultiBlynk, dynamic parameters, special chars input
  *****************************************************************************************************************************/
 
 #if defined(ESP8266) || defined(ESP32) || defined(AVR) || (ARDUINO_SAM_DUE) || defined(CORE_TEENSY)
@@ -69,13 +70,18 @@
 
 #define BLYNK_NO_YIELD
 
+#define USE_BLYNK_WM      true
+//#define USE_BLYNK_WM      false
+
+#define USE_DYNAMIC_PARAMETERS      true
+
 // Start location in EEPROM to store config data. Default 0.
 // Config data Size currently is 128 bytes w/o chksum, 132 with chksum)
 #define EEPROM_START     0
 
 #define USE_SSL     false
 
-#define USE_CHECKSUM      true
+#if USE_BLYNK_WM
 
 #if USE_SSL
 // Need ArduinoECCX08 and ArduinoBearSSL libraries
@@ -91,9 +97,74 @@
 #endif
 #endif
 
-#define USE_BLYNK_WM      true
+/////////////// Start dynamic Credentials ///////////////
 
-#if !USE_BLYNK_WM
+//Defined in <BlynkEthernet_WM.h>
+/**************************************
+  #define MAX_ID_LEN                5
+  #define MAX_DISPLAY_NAME_LEN      16
+
+  typedef struct
+  {
+  char id             [MAX_ID_LEN + 1];
+  char displayName    [MAX_DISPLAY_NAME_LEN + 1];
+  char *pdata;
+  uint8_t maxlen;
+  } MenuItem;
+**************************************/
+
+#if USE_DYNAMIC_PARAMETERS
+
+#define MAX_MQTT_SERVER_LEN      34
+char MQTT_Server  [MAX_MQTT_SERVER_LEN + 1]   = "";
+
+#define MAX_MQTT_PORT_LEN        6
+char MQTT_Port   [MAX_MQTT_PORT_LEN + 1]  = "";
+
+#define MAX_MQTT_USERNAME_LEN      34
+char MQTT_UserName  [MAX_MQTT_USERNAME_LEN + 1]   = "";
+
+#define MAX_MQTT_PW_LEN        34
+char MQTT_PW   [MAX_MQTT_PW_LEN + 1]  = "";
+
+#define MAX_MQTT_SUBS_TOPIC_LEN      34
+char MQTT_SubsTopic  [MAX_MQTT_SUBS_TOPIC_LEN + 1]   = "";
+
+#define MAX_MQTT_PUB_TOPIC_LEN       34
+char MQTT_PubTopic   [MAX_MQTT_PUB_TOPIC_LEN + 1]  = "";
+
+MenuItem myMenuItems [] =
+{
+  { "mqtt", "MQTT Server",      MQTT_Server,      MAX_MQTT_SERVER_LEN },
+  { "mqpt", "Port",             MQTT_Port,        MAX_MQTT_PORT_LEN   },
+  { "user", "MQTT UserName",    MQTT_UserName,    MAX_MQTT_USERNAME_LEN },
+  { "mqpw", "MQTT PWD",         MQTT_PW,          MAX_MQTT_PW_LEN },
+  { "subs", "Subs Topics",      MQTT_SubsTopic,   MAX_MQTT_SUBS_TOPIC_LEN },
+  { "pubs", "Pubs Topics",      MQTT_PubTopic,    MAX_MQTT_PUB_TOPIC_LEN },
+};
+
+uint16_t NUM_MENU_ITEMS = sizeof(myMenuItems) / sizeof(MenuItem);  //MenuItemSize;
+
+#else
+
+MenuItem myMenuItems [] = {};
+
+uint16_t NUM_MENU_ITEMS = 0;
+#endif
+
+
+/////// // End dynamic Credentials ///////////
+
+#else   //USE_BLYNK_WM
+
+#if USE_BUILTIN_ETHERNET
+#include <BlynkSimple_STM32BI_Ethernet.h>
+#elif USE_UIP_ETHERNET
+#include <BlynkSimpleUIPEthernet.h>
+#else
+#include <BlynkSimpleEthernet.h>
+#endif
+
 #define USE_LOCAL_SERVER      true
 
 #if USE_LOCAL_SERVER
@@ -106,7 +177,7 @@ char server[] = "blynk-cloud.com";
 #endif
 
 #define BLYNK_HARDWARE_PORT       8080
-#endif
+#endif    //USE_BLYNK_WM
 
 #include <DHT.h>
 
@@ -210,9 +281,42 @@ void setup()
   timer.setInterval(60000L, readAndSendData);
 }
 
+#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
+void displayCredentials(void)
+{
+  Serial.println("\nYour stored Credentials :");
+
+  for (int i = 0; i < NUM_MENU_ITEMS; i++)
+  {
+    Serial.println(String(myMenuItems[i].displayName) + " = " + myMenuItems[i].pdata);
+  }
+}
+#endif
+
 void loop()
 {
   Blynk.run();
   timer.run();
   check_status();
+
+#if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
+  static bool displayedCredentials = false;
+
+  if (!displayedCredentials)
+  {
+    for (int i = 0; i < NUM_MENU_ITEMS; i++)
+    {
+      if (!strlen(myMenuItems[i].pdata))
+      {
+        break;
+      }
+
+      if ( i == (NUM_MENU_ITEMS - 1) )
+      {
+        displayedCredentials = true;
+        displayCredentials();
+      }
+    }
+  }
+#endif    
 }
