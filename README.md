@@ -6,6 +6,8 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/BlynkEthernet_STM32_WM.svg)](http://github.com/khoih-prog/BlynkEthernet_STM32_WM/issues)
 
+---
+
 ### Releases v1.0.4
 
 1. New ***powerful-yet-simple-to-use feature to enable adding dynamic custom parameters*** from sketch and input using the same Config Portal. Config Portal will be auto-adjusted to match the number of dynamic parameters.
@@ -33,19 +35,24 @@ This library currently supports
 2. ***STM32 boards (with 64+K Flash) running ENC28J60 shields***
 3. ***STM32 boards (with 64+K Flash) running W5x00 shields***
 
+---
+
 ## Prerequisite
-1. [`Arduino IDE 1.8.12 or later` for Arduino](https://www.arduino.cc/en/Main/Software)
-2. [`Blynk library 0.6.1 or later`](https://www.arduino.cc/en/guide/libraries#toc3)
-3. [`Arduino Core for STM32 1.8.0 or later`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32 (Use Arduino Board Manager)
+1. [`Arduino IDE 1.8.12+` for Arduino](https://www.arduino.cc/en/Main/Software)
+2. [`Blynk library 0.6.1+`](https://www.arduino.cc/en/guide/libraries#toc3)
+3. [`Arduino Core for STM32 1.9.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32 (Use Arduino Board Manager)
 3. Depending on which Ethernet card you're using:
-   - [`STM32Ethernet library`](https://github.com/stm32duino/STM32Ethernet) for built-in Ethernet LAN8742A on (Nucleo-144, Discovery, etc.)
-   - [`UIPEthernet library`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60
-   - [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) for W5100, W5200 and W5500
-4. [`EthernetWebServer_STM32 library`](https://github.com/khoih-prog/EthernetWebServer_STM32)
+   - [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in Ethernet LAN8742A on (Nucleo-144, Discovery). To be used with [`STM32duino_LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP). 
+   - [`Ethernet library v2.0.0+`](https://www.arduino.cc/en/Reference/Ethernet) for W5100, W5200 and W5500.
+   - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500 (Deprecated, use Arduino Ethernet library).
+   - [`Ethernet3 library v1.5.3+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip.
+   - [`EthernetLarge library v2.0.0+`](https://github.com/OPEnSLab-OSU/EthernetLarge) for W5100, W5200 and W5500. ***Ready*** from v1.0.1.
+   - [`UIPEthernet library v2.0.8+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60.
+4. [`EthernetWebServer_STM32 library v1.0.4+`](https://github.com/khoih-prog/EthernetWebServer_STM32)
 
-### Installation
+---
 
-The suggested way to install is to:
+## Installation
 
 #### Use Arduino Library Manager
 The best way is to use `Arduino Library Manager`. Search for `BlynkEthernet_STM32_Manager`, then select / install the latest version. 
@@ -59,13 +66,48 @@ You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/
 4. Copy whole 
   - `BlynkEthernet_STM32_WM-master/src` folder to Arduino libraries' directory such as `~/Arduino/libraries/`.
 
-### Important note
+### VS Code & PlatformIO:
+1. Install [VS Code](https://code.visualstudio.com/)
+2. Install [PlatformIO](https://platformio.org/platformio-ide)
+3. Install **BlynkEthernet_STM32_Manager** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/). Search for BlynkEthernet_STM32_Manager in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
+4. Use included [platformio.ini](examples/platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automaticly.
 
-1. Because using dynamic parameters requires HTML page for Config Portal larger than 2K, the current [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) must be modified if you are using W5100/W5200/W5500 Ethernet shields.
+---
+
+### Libraries' Patches
+
+1. If your application requires 2K+ HTML page, the current [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) must be modified if you are using W5200/W5500 Ethernet shields. W5100 is not supported for 2K+ buffer. If you use boards requiring different CS/SS pin for W5x00 Ethernet shield, for example ESP32, ESP8266, nRF52, etc., you also have to modify the following libraries to be able to specify the CS/SS pin correctly.
+
 2. To fix [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet), just copy these following files into the [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) directory to overwrite the old files:
-- [Ethernet.h](Ethernet/src/Ethernet.h)
-- [EthernetServer.cpp](Ethernet/src/EthernetServer.cpp)
-- [w5100.cpp](Ethernet/src/utility/w5100.cpp)
+- [Ethernet.h](LibraryPatches/Ethernet/src/Ethernet.h)
+- [Ethernet.cpp](LibraryPatches/Ethernet/src/Ethernet.cpp)
+- [EthernetServer.cpp](LibraryPatches/Ethernet/src/EthernetServer.cpp)
+- [w5100.h](LibraryPatches/Ethernet/src/utility/w5100.h)
+- [w5100.cpp](LibraryPatches/Ethernet/src/utility/w5100.cpp)
+
+3. To fix [`EthernetLarge library`](https://github.com/OPEnSLab-OSU/EthernetLarge), just copy these following files into the [`EthernetLarge library`](https://github.com/OPEnSLab-OSU/EthernetLarge) directory to overwrite the old files:
+- [EthernetLarge.h](LibraryPatches/EthernetLarge/src/EthernetLarge.h)
+- [EthernetLarge.cpp](LibraryPatches/EthernetLarge/src/EthernetLarge.cpp)
+- [EthernetServer.cpp](LibraryPatches/EthernetLarge/src/EthernetServer.cpp)
+- [w5100.h](LibraryPatches/EthernetLarge/src/utility/w5100.h)
+- [w5100.cpp](LibraryPatches/EthernetLarge/src/utility/w5100.cpp)
+
+4. To fix [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2), just copy these following files into the [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2) directory to overwrite the old files:
+- [Ethernet2.h](LibraryPatches/Ethernet2/src/Ethernet2.h)
+- [Ethernet2.cpp](LibraryPatches/Ethernet2/src/Ethernet2.cpp)
+
+5. To fix [`Ethernet3 library`](https://github.com/sstaub/Ethernet3), just copy these following files into the [`Ethernet3 library`](https://github.com/sstaub/Ethernet3) directory to overwrite the old files:
+- [Ethernet3.h](LibraryPatches/Ethernet3/src/Ethernet3.h)
+- [Ethernet3.cpp](LibraryPatches/Ethernet3/src/Ethernet3.cpp)
+
+6. ***To be able to compile and run on nRF52 boards with ENC28J60 using UIPEthernet library***, you have to copy these following files into the UIPEthernet `utility` directory to overwrite the old files:
+
+- [UIPEthernet.h](LibraryPatches/UIPEthernet/UIPEthernet.h)
+- [UIPEthernet.cpp](LibraryPatches/UIPEthernet/UIPEthernet.cpp)
+- [Enc28J60Network.h](LibraryPatches/UIPEthernet/utility/Enc28J60Network.h)
+- [Enc28J60Network.cpp](LibraryPatches/UIPEthernet/utility/Enc28J60Network.cpp)
+
+---
 
 ### How to use
 
@@ -87,11 +129,13 @@ In your code, replace
 
 Then replace `Blynk.begin(...)` with :
 
-1. `Blynk.begin()`
+`Blynk.begin()`
 
 in your code. Keep `Blynk.run()` intact.
 
 That's it.
+
+---
 
 ### How to add dynamic parameters from sketch
 
@@ -159,11 +203,16 @@ uint16_t NUM_MENU_ITEMS = 0;
 /////// // End dynamic Credentials ///////////
 
 ```
+
 - If you don't need to add dynamic parameters, use the following in sketch
 
 ```
 #define USE_DYNAMIC_PARAMETERS     false
 ```
+
+---
+
+### Examples
 
 Also see examples: 
  1. [AM2315_W5100](examples/AM2315_W5100)
@@ -179,8 +228,10 @@ Also see examples:
 11. [BI_Ethernet_Blynk_Email](examples/BI_Ethernet_Blynk_Email)
 12. [BlynkHTTPClient](examples/BlynkHTTPClient)
 
+---
 
 ## So, how it works?
+
 If no valid config data are stored in EEPROM, it will switch to `Configuration Mode`. Connect to access point at the IP address displayed on Terminal or Router's DHCP server as in the following terminal output:
 
 ```
@@ -280,26 +331,7 @@ void loop()
 }
 ```
 
-## TO DO
-
- 1. Same features for other boards with Ethernet shields.
- 2. To write code and make SSL working. Currently, Ethernet SSL is not supported by Blynk code yet.
- 3. Make simulated EEPROM work on all STM32 boards
-
-## DONE
-
- 1. Permit EEPROM size and location configurable to avoid conflict with others.
- 2. More flexible to configure reconnection timeout.
- 3. For fresh config data, don't need to wait for connecting timeout before entering config portal.
- 4. If the config data not entered completely (Server, HardwarePort and Blynk token), entering config portal
- 5. Change Synch XMLHttpRequest to Async
- 6. Reduce memory usage.
- 7. Support W5x00, ENC28J60 Ethernet shield as well as built-in Ethernet LAN8742A
- 8. Add checksum
- 9. Support STM32 boards
-10. Add MultiBlynk features with Auto(Re)Connect to the available Server.
-11. Easy-to-use Dynamic Parameters without the necessity to write complicated ArduinoJSon functions
-12. Permit to input special chars such as ***%*** and ***#*** into data fields. 
+---
 
 ## Example [BI_Ethernet_Blynk](examples/BI_Ethernet_Blynk) 
 
@@ -621,6 +653,8 @@ BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBB
 BBBBBBBBBB BBBBBBBBBB BBBB
 ```
 
+---
+
 ### Releases v1.0.4
 
 1. New ***powerful-yet-simple-to-use feature to enable adding dynamic custom parameters*** from sketch and input using the same Config Portal. Config Portal will be auto-adjusted to match the number of dynamic parameters.
@@ -649,6 +683,31 @@ BBBBBBBBBB BBBBBBBBBB BBBB
 
 1. Add support to STM32 boards with built-in Ethernet LAN8742A, ENC28J60 or W5x00 Ethernet shields 
 
+---
+
+### TO DO
+
+ 1. Same features for other boards with Ethernet shields.
+ 2. To write code and make SSL working. Currently, Ethernet SSL is not supported by Blynk code yet.
+ 3. Make simulated EEPROM work on all STM32 boards
+
+### DONE
+
+ 1. Permit EEPROM size and location configurable to avoid conflict with others.
+ 2. More flexible to configure reconnection timeout.
+ 3. For fresh config data, don't need to wait for connecting timeout before entering config portal.
+ 4. If the config data not entered completely (Server, HardwarePort and Blynk token), entering config portal
+ 5. Change Synch XMLHttpRequest to Async
+ 6. Reduce memory usage.
+ 7. Support W5x00, ENC28J60 Ethernet shield as well as built-in Ethernet LAN8742A
+ 8. Add checksum
+ 9. Support STM32 boards
+10. Add MultiBlynk features with Auto(Re)Connect to the available Server.
+11. Easy-to-use Dynamic Parameters without the necessity to write complicated ArduinoJSon functions
+12. Permit to input special chars such as ***%*** and ***#*** into data fields. 
+
+---
+
 ## Contributing
 
 If you want to contribute to this project:
@@ -656,6 +715,8 @@ If you want to contribute to this project:
 - Ask for enhancements
 - Create issues and pull requests
 - Tell other people about this library
+
+---
 
 ## Copyright
 
