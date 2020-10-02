@@ -36,9 +36,11 @@ This library currently supports
 3. ***STM32 boards (with 64+K Flash) running W5x00 shields***
 
 ---
+---
 
 ## Prerequisite
-1. [`Arduino IDE 1.8.12+` for Arduino](https://www.arduino.cc/en/Main/Software)
+
+1. [`Arduino IDE 1.8.13+` for Arduino](https://www.arduino.cc/en/Main/Software)
 2. [`Blynk library 0.6.1+`](https://www.arduino.cc/en/guide/libraries#toc3)
 3. [`Arduino Core for STM32 1.9.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32 (Use Arduino Board Manager)
 3. Depending on which Ethernet card you're using:
@@ -47,8 +49,8 @@ This library currently supports
    - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500 (Deprecated, use Arduino Ethernet library).
    - [`Ethernet3 library v1.5.3+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip.
    - [`EthernetLarge library v2.0.0+`](https://github.com/OPEnSLab-OSU/EthernetLarge) for W5100, W5200 and W5500. ***Ready*** from v1.0.1.
-   - [`UIPEthernet library v2.0.8+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60.
-4. [`EthernetWebServer_STM32 library v1.0.4+`](https://github.com/khoih-prog/EthernetWebServer_STM32). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer_STM32.svg?)](https://www.ardu-badge.com/EthernetWebServer_STM32).
+   - [`UIPEthernet library v2.0.9+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60.
+4. [`EthernetWebServer_STM32 library v1.0.6+`](https://github.com/khoih-prog/EthernetWebServer_STM32). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer_STM32.svg?)](https://www.ardu-badge.com/EthernetWebServer_STM32).
 
 ---
 
@@ -67,6 +69,7 @@ You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/
   - `BlynkEthernet_STM32_WM-master/src` folder to Arduino libraries' directory such as `~/Arduino/libraries/`.
 
 ### VS Code & PlatformIO:
+
 1. Install [VS Code](https://code.visualstudio.com/)
 2. Install [PlatformIO](https://platformio.org/platformio-ide)
 3. Install **BlynkEthernet_STM32_Manager** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/). Search for BlynkEthernet_STM32_Manager in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
@@ -94,8 +97,14 @@ You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/
 - [w5100.cpp](LibraryPatches/EthernetLarge/src/utility/w5100.cpp)
 
 4. To fix [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2), just copy these following files into the [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2) directory to overwrite the old files:
+
 - [Ethernet2.h](LibraryPatches/Ethernet2/src/Ethernet2.h)
 - [Ethernet2.cpp](LibraryPatches/Ethernet2/src/Ethernet2.cpp)
+
+To add UDP Multicast support, necessary for [**UPnP_Generic library**](https://github.com/khoih-prog/UPnP_Generic):
+
+- [EthernetUdp2.h](LibraryPatches/Ethernet2/src/EthernetUdp2.h)
+- [EthernetUdp2.cpp](LibraryPatches/Ethernet2/src/EthernetUdp2.cpp)
 
 5. To fix [`Ethernet3 library`](https://github.com/sstaub/Ethernet3), just copy these following files into the [`Ethernet3 library`](https://github.com/sstaub/Ethernet3) directory to overwrite the old files:
 - [Ethernet3.h](LibraryPatches/Ethernet3/src/Ethernet3.h)
@@ -212,6 +221,7 @@ uint16_t NUM_MENU_ITEMS = 0;
 ```
 
 ---
+---
 
 ### Examples
 
@@ -322,6 +332,7 @@ void loop()
   ...
 }
 ```
+
 just
 
 ```cpp
@@ -332,6 +343,7 @@ void loop()
 }
 ```
 
+---
 ---
 
 ## Example [BI_Ethernet_Blynk](examples/BI_Ethernet_Blynk) 
@@ -611,6 +623,10 @@ void loop()
 }
 ```
 
+---
+
+### Debug Termimal Output Samples
+
 The following is the sample terminal output when running example [BI_Ethernet_Blynk](examples/BI_Ethernet_Blynk) on Nucleo-144 F767ZI with built-in Ethernet PHY.
 
 ```
@@ -654,6 +670,7 @@ BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBBBBBBBBB BBB
 BBBBBBBBBB BBBBBBBBBB BBBB
 ```
 
+---
 ---
 
 ### Releases v1.0.4
