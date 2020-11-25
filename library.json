@@ -22,6 +22,45 @@
       "tests"
     ]
   },
+  "dependencies": 
+  [
+    {
+      "owner": "blynkkk",
+      "name": "Blynk",
+      "version": "^0.6.1",
+      "platforms": ["*"]
+    },
+    {
+      "owner": "stm32duino",
+      "name": "STM32duino LwIP",
+      "version": "^2.1.2",
+      "platforms": ["ststm32", "stm32"]
+    },
+    {
+      "owner": "stm32duino",
+      "name": "STM32Ethernet",
+      "version": "^1.2.0",
+      "platforms": ["ststm32", "stm32"]
+    }
+    {
+      "owner": "khoih.prog",
+      "name": "EthernetWebServer_STM32",
+      "version": "^1.1.0",
+      "platforms": ["ststm32", "stm32"]
+    }
+    {
+      "owner": "uipethernet",
+      "name": "UIPEthernet",
+      "version": "^2.0.8",
+      "platforms": ["*"]
+    }
+    {
+      "owner": "arduino-libraries",
+      "name": "Ethernet",
+      "version": "^2.0.0",
+      "platforms": ["*"]
+    }
+  ],
   "frameworks": "*",
   "platforms": "stm32,ststm32",
   "examples": "examples/*/*/*.ino"
