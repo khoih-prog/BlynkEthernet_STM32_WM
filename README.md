@@ -16,6 +16,7 @@
   * [Currently supported Boards](#currently-supported-boards)
   * [Currently supported Ethernet shields/modules](#currently-supported-ethernet-shieldsmodules)
 * [Changelog](#changelog)
+  * [Releases v1.1.1](#releases-v111)
   * [Major Releases v1.1.0](#major-releases-v110)
   * [Releases v1.0.4](#releases-v104)
   * [Releases v1.0.3](#releases-v103)
@@ -170,6 +171,10 @@ New recent features:
 ---
 
 ## Changelog
+
+### Releases v1.1.1
+
+1. To permit autoreset after configurable timeout if DRD/MRD or non-persistent forced-CP. Check [**Good new feature: Blynk.resetAndEnterConfigPortal() Thanks & question #27**](https://github.com/khoih-prog/Blynk_WM/issues/27)
 
 ### Major Releases v1.1.0
 
@@ -854,7 +859,7 @@ If no valid config data are stored in EEPROM (data verified by checksum), forced
 
 ```
 Start BI_Ethernet_Blynk on NUCLEO_F767ZI using LAN8742A Ethernet & STM32Ethernet Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d01234
@@ -1524,7 +1529,7 @@ Pubs Topics = Pubs_Topics
 
 ```
 Start BI_Ethernet_Blynk on NUCLEO_F767ZI using LAN8742A Ethernet & STM32Ethernet Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d01234
@@ -1558,7 +1563,7 @@ Pubs Topics = Pubs_Topics
 CP Button Hit. Rebooting
 
 Start BI_Ethernet_Blynk on NUCLEO_F767ZI using LAN8742A Ethernet & STM32Ethernet Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1594,7 +1599,7 @@ Pubs Topics = Pubs_Topics
 Persistent CP Button Hit. Rebooting
 
 Start BI_Ethernet_Blynk on NUCLEO_F767ZI using LAN8742A Ethernet & STM32Ethernet Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1634,7 +1639,7 @@ The following is the sample terminal output when running example [EthernetENC_Bl
 
 ```
 Start EthernetENC_Blynk on NUCLEO_F767ZI using ENC28J60 & EthernetENC Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1682,7 +1687,7 @@ Pubs Topics = Pubs_Topics
 
 ```
 Start EthernetENC_Blynk on NUCLEO_F767ZI using ENC28J60 & EthernetENC Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d01234
@@ -1716,7 +1721,7 @@ Pubs Topics = Pubs_Topics
 CP Button Hit. Rebooting
 
 Start EthernetENC_Blynk on NUCLEO_F767ZI using ENC28J60 & EthernetENC Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1752,7 +1757,7 @@ ClearFlag write = 0xd0d04321
 Persistent CP Button Hit. Rebooting
 
 Start EthernetENC_Blynk on NUCLEO_F767ZI using ENC28J60 & EthernetENC Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1790,7 +1795,7 @@ FFFFFFFFF FFFFFFFFFF FF[1322491] h:UpdEEPROM
 
 ```
 Start EthernetENC_Blynk on NUCLEO_F767ZI using ENC28J60 & EthernetENC Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1868,7 +1873,7 @@ The following is the sample terminal output when running example [ENC28J60_Blynk
 
 ```
 Start ENC28J60_Blynk on NUCLEO_F767ZI using ENC28J60 & UIPEthernet Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1922,7 +1927,7 @@ BBBBBBBBB
 
 ```
 Start ENC28J60_Blynk on NUCLEO_F767ZI using ENC28J60 & UIPEthernet Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d01234
@@ -1974,7 +1979,7 @@ FFF[233631] h:UpdEEPROM
 CP Button Hit. Rebooting
 
 Start ENC28J60_Blynk on NUCLEO_F767ZI using ENC28J60 & UIPEthernet Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2015,7 +2020,7 @@ ClearFlag write = 0xd0d04321
 Persistent CP Button Hit. Rebooting
 
 Start ENC28J60_Blynk on NUCLEO_F767ZI using ENC28J60 & UIPEthernet Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2062,7 +2067,7 @@ The following is the sample terminal output when running example [W5100_Blynk](e
 
 ```
 Start W5100_Blynk on NUCLEO_F767ZI using W5x00 & EthernetLarge Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2115,7 +2120,7 @@ BBBBBBBBB B
 
 ```
 Start W5100_Blynk on NUCLEO_F767ZI using W5x00 & EthernetLarge Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d01234
@@ -2152,7 +2157,7 @@ Pubs Topics = Pubs_Topics
 CP Button Hit. Rebooting
 
 Start W5100_Blynk on NUCLEO_F767ZI using W5x00 & EthernetLarge Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2189,7 +2194,7 @@ Pubs Topics = Pubs_Topics
 Persistent CP Button Hit. Rebooting
 
 Start W5100_Blynk on NUCLEO_F767ZI using W5x00 & EthernetLarge Library
-BlynkEthernet_STM32_WM v1.1.0
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2256,6 +2261,10 @@ Sometimes, the library will only work if you update the board core to the latest
 ---
 
 ## Releases
+
+### Releases v1.1.1
+
+1. To permit autoreset after configurable timeout if DRD/MRD or non-persistent forced-CP. Check [**Good new feature: Blynk.resetAndEnterConfigPortal() Thanks & question #27**](https://github.com/khoih-prog/Blynk_WM/issues/27)
 
 ### Major Releases v1.1.0
 

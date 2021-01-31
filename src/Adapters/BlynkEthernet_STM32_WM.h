@@ -8,7 +8,7 @@
   Built by Khoi Hoang https://github.com/khoih-prog/BlynkEthernet_STM32_WM
   Licensed under MIT license
 
-  Version: 1.1.0
+  Version: 1.1.1
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -18,6 +18,7 @@
   1.0.3   K Hoang      10/03/2020 Reduce html and code size
   1.0.4   K Hoang      20/04/2020 Add MultiBlynk, dynamic parameters, special chars input
   1.1.0   K Hoang      30/01/2021 Fix ConfigPortal bug. Add software Config Portal request. Use FlashStorage_STM32.
+  1.1.1   K Hoang      31/01/2021 To permit autoreset after timeout if DRD/MRD or non-persistent forced-CP
  *****************************************************************************************************************************/
 
 #pragma once
@@ -439,8 +440,9 @@ class BlynkEthernet
           clearForcedCP();
         }
           
+        hadConfigData = isForcedConfigPortal ? true : (noConfigPortal ? false : true);
+        
         // failed to connect to Blynk server, will start configuration mode
-        hadConfigData = false;
         startConfigurationMode();
       }
     }
@@ -1566,9 +1568,20 @@ class BlynkEthernet
       // If there is no saved config Data, stay in config mode forever until having config Data.
       // or SSID, PW, Server,Token ="nothing"
       if (hadConfigData)
+      {
         configTimeout = millis() + CONFIG_TIMEOUT;
+        
+#if ( BLYNK_WM_DEBUG > 2)                   
+        BLYNK_LOG4(BLYNK_F("s:millis() = "), millis(), BLYNK_F(", configTimeout = "), configTimeout);
+#endif
+      }
       else
+      {
         configTimeout = 0;
+#if ( BLYNK_WM_DEBUG > 2)                   
+        BLYNK_LOG1(BLYNK_F("s:configTimeout = 0"));
+#endif        
+      }
 
       configuration_mode = true;
     }
