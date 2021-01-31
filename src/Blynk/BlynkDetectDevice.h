@@ -1,35 +1,26 @@
 /****************************************************************************************************************************
-   BlynkDetectDevice.h
-   For ESP8266 AT-command shields
+  BlynkDetectDevice.h
+  For STM32 running built-in Ethernet
 
-   Blynk_Esp8266AT_WM is a library for the Mega, Teensy, SAM DUE and SAMD boards (https://github.com/khoih-prog/Blynk_Esp8266AT_WM)
-   to enable easy configuration/reconfiguration and autoconnect/autoreconnect of WiFi/Blynk
+  BlynkEthernet_STM32_WM is a library for the STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
+  to enable easy configuration/reconfiguration and autoconnect/autoreconnect to Blynk
+  Based on and modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
+  Built by Khoi Hoang https://github.com/khoih-prog/BlynkEthernet_STM32_WM
+  Licensed under MIT license
 
-   Forked from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
-   Built by Khoi Hoang https://github.com/khoih-prog/Blynk_WM
-   Licensed under MIT license
-   Version: 1.0.7
+  Version: 1.1.0
 
-   Original Blynk Library author:
-   @file       BlynkSimpleShieldEsp8266.h
-   @author     Volodymyr Shymanskyy
-   @license    This project is released under the MIT License (MIT)
-   @copyright  Copyright (c) 2015 Volodymyr Shymanskyy
-   @date       Jun 2015
-   @brief
-
-   Version Modified By   Date        Comments
-   ------- -----------  ----------   -----------
-    1.0.0   K Hoang      16/02/2020  Initial coding
-    1.0.1   K Hoang      17/02/2020  Add checksum, fix bug
-    1.0.2   K Hoang      22/02/2020  Add support to SAMD boards
-    1.0.3   K Hoang      03/03/2020  Add support to STM32 boards, except STM32F0
-    1.0.4   K Hoang      13/03/2020  Add SAM DUE support. Enhance GUI.
-    1.0.5   K Hoang      23/06/2020  Add Adafruit SAMD21/SAMD51 and nRF52 support, DRD, MultiWiFi features.
-                                     WPA2 SSID PW to 63 chars. Permit special chars such as !,@,#,$,%,^,&,* into data fields.
-    1.0.6   K Hoang      27/06/2020  Add ESP32-AT support and use ESP_AT_Lib. Enhance MultiWiFi connection logic.
-    1.0.7   K Hoang      27/07/2020  Add support to all STM32F/L/H/G/WB/MP1 and Seeeduino SAMD21/SAMD51 boards. 
+  Version Modified By   Date      Comments
+  ------- -----------  ---------- -----------
+  1.0.0   K Hoang      28/02/2020 Initial coding for STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
+  1.0.1   K Hoang      03/03/2020 Fix bug for built-in Ethernet LAN8742A
+  1.0.2   K Hoang      06/03/2020 Fix crashing bug when using dynamic EthernetServer
+  1.0.3   K Hoang      10/03/2020 Reduce html and code size
+  1.0.4   K Hoang      20/04/2020 Add MultiBlynk, dynamic parameters, special chars input
+  1.1.0   K Hoang      30/01/2021 Fix ConfigPortal bug. Add software Config Portal request. Use FlashStorage_STM32.
  *****************************************************************************************************************************/
+
+#pragma once
 
 #ifndef BlynkDetectDevice_h
 #define BlynkDetectDevice_h
