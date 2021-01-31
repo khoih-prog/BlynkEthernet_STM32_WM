@@ -1482,6 +1482,7 @@ The following is the sample terminal output when running example [BI_Ethernet_Bl
 
 ```
 Start BI_Ethernet_Blynk on NUCLEO_F767ZI using LAN8742A Ethernet & STM32Ethernet Library
+BlynkEthernet_STM32_WM v1.1.1
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
