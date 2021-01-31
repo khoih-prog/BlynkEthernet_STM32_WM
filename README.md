@@ -1467,7 +1467,7 @@ uint16_t NUM_MENU_ITEMS = 0;
 ---
 ---
 
-### Debug Termimal Output Samples
+### Debug Terminal Output Samples
 
 ### 1. BI_Ethernet_Blynk on NUCLEO_F767ZI using LAN8742A Ethernet and STM32Ethernet Library
 
