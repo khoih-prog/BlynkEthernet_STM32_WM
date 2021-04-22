@@ -1,12 +1,13 @@
 /****************************************************************************************************************************
-  W5100_WM_Config.ino
-  For STM32 running W5x00 Ethernet shields
-  
-  BlynkSTM32Ethernet_WM is a library for the STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
+  LAN8720_Ethernet_WMConfig.ino
+  For STM32 running LAN8720 Ethernet
+
+  BlynkEthernet_STM32_WM is a library for the STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
   to enable easy configuration/reconfiguration and autoconnect/autoreconnect to Blynk
-  Forked from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
-  Built by Khoi Hoang https://github.com/khoih-prog/BlynkGSM_ESPManager
+  Based on and modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
+  Built by Khoi Hoang https://github.com/khoih-prog/BlynkEthernet_STM32_WM
   Licensed under MIT license
+
   Version: 1.2.0
 
   Version Modified By   Date      Comments
@@ -24,8 +25,6 @@
 #include "defines.h"
 #include "Credentials.h"
 #include "dynamicParams.h"
-
-#include <SPI.h>
 
 #include <DHT.h>
 
@@ -125,9 +124,9 @@ void setup()
   Serial.begin(115200);
   while (!Serial);
 
-  delay(200);
+  delay(2000);
   
-  Serial.print(F("\nStart W5100_WM_Config on ")); Serial.print(BOARD_NAME);
+  Serial.print(F("\nStart LAN8720_Ethernet_WM_Config on ")); Serial.print(BOARD_NAME);
   Serial.print(F(" using ")); Serial.println(SHIELD_TYPE);
   Serial.println(BLYNK_ETHERNET_STM32_WM_VERSION);
 

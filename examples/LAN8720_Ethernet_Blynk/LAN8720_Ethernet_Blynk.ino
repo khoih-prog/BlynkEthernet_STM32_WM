@@ -1,12 +1,13 @@
 /****************************************************************************************************************************
-  W5100_WM_Config.ino
-  For STM32 running W5x00 Ethernet shields
-  
-  BlynkSTM32Ethernet_WM is a library for the STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
+  LAN8720_Ethernet_Blynk.ino
+  For STM32 running LAN8720 Ethernet
+
+  BlynkEthernet_STM32_WM is a library for the STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
   to enable easy configuration/reconfiguration and autoconnect/autoreconnect to Blynk
-  Forked from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
-  Built by Khoi Hoang https://github.com/khoih-prog/BlynkGSM_ESPManager
+  Based on and modified from Blynk library v0.6.1 https://github.com/blynkkk/blynk-library/releases
+  Built by Khoi Hoang https://github.com/khoih-prog/BlynkEthernet_STM32_WM
   Licensed under MIT license
+
   Version: 1.2.0
 
   Version Modified By   Date      Comments
@@ -26,14 +27,6 @@
 #include "dynamicParams.h"
 
 #include <SPI.h>
-
-#include <DHT.h>
-
-#define DHT_PIN     5
-#define DHT_TYPE    DHT11
-
-DHT dht(DHT_PIN, DHT_TYPE);
-BlynkTimer timer;
 
 #define BLYNK_PIN_FORCED_CONFIG           V10
 #define BLYNK_PIN_FORCED_PERS_CONFIG      V20
@@ -60,29 +53,6 @@ BLYNK_WRITE(BLYNK_PIN_FORCED_PERS_CONFIG)
     // This will keep CP forever, until you successfully enter CP, and Save data to clear the flag.
     Blynk.resetAndEnterConfigPortalPersistent();
   }
-}
-
-void readAndSendData()
-{
-  float temperature = dht.readTemperature();
-  float humidity    = dht.readHumidity();
-
-  if (Blynk.connected())
-  {
-    if (!isnan(temperature) && !isnan(humidity))
-    {
-      Blynk.virtualWrite(V17, String(temperature, 1));
-      Blynk.virtualWrite(V18, String(humidity, 1));
-    }
-    else
-    {
-      Blynk.virtualWrite(V17, F("NAN"));
-      Blynk.virtualWrite(V18, F("NAN"));
-    }
-  }
-
-  // Blynk Timer uses millis() and is still working even if WiFi/Blynk not connected
-  Serial.print(F("R"));
 }
 
 void heartBeatPrint()
@@ -125,14 +95,12 @@ void setup()
   Serial.begin(115200);
   while (!Serial);
 
-  delay(200);
+  delay(2000);
   
-  Serial.print(F("\nStart W5100_WM_Config on ")); Serial.print(BOARD_NAME);
+  Serial.print(F("\nStart LAN8720_Ethernet_Blynk on ")); Serial.print(BOARD_NAME);
   Serial.print(F(" using ")); Serial.println(SHIELD_TYPE);
   Serial.println(BLYNK_ETHERNET_STM32_WM_VERSION);
-
-  dht.begin();
-
+  
 #if !(USE_BUILTIN_ETHERNET || USE_UIP_ETHERNET)
   pinMode(SDCARD_CS, OUTPUT);
   digitalWrite(SDCARD_CS, HIGH); // Deselect the SD card
@@ -163,8 +131,6 @@ void setup()
     Serial.print(F("IP = "));
     Serial.println(Ethernet.localIP());
   }
-
-  timer.setInterval(60000L, readAndSendData);
 }
 
 #if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
@@ -184,7 +150,6 @@ void displayCredentials()
 void loop()
 {
   Blynk.run();
-  timer.run();
   check_status();
 
 #if (USE_BLYNK_WM && USE_DYNAMIC_PARAMETERS)
