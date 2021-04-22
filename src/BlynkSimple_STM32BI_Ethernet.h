@@ -1,6 +1,6 @@
 /****************************************************************************************************************************
   BlynkSimple_STM32BI_Ethernet.h
-  For STM32 running built-in Ethernet
+  For STM32 running LAN8720 and built-in LAN8742A Ethernet
 
   BlynkEthernet_STM32_WM is a library for the STM32 running built-in Ethernet, ENC28J60 or W5x00 Ethernet shields
   to enable easy configuration/reconfiguration and autoconnect/autoreconnect to Blynk
@@ -8,7 +8,7 @@
   Built by Khoi Hoang https://github.com/khoih-prog/BlynkEthernet_STM32_WM
   Licensed under MIT license
 
-  Version: 1.1.1
+  Version: 1.2.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -19,6 +19,7 @@
   1.0.4   K Hoang      20/04/2020 Add MultiBlynk, dynamic parameters, special chars input
   1.1.0   K Hoang      30/01/2021 Fix ConfigPortal bug. Add software Config Portal request. Use FlashStorage_STM32.
   1.1.1   K Hoang      31/01/2021 To permit autoreset after timeout if DRD/MRD or non-persistent forced-CP
+  1.2.0   K Hoang      22/04/2021 Add support to LAN8720 using STM32F4 or STM32F7
  *****************************************************************************************************************************/
 
 #pragma once
@@ -38,11 +39,15 @@
 #endif
 
 #ifndef BLYNK_ETHERNET_WM_VERSION
-  #define BLYNK_ETHERNET_STM32_WM_VERSION     "BlynkEthernet_STM32_WM v1.1.1"
+  #define BLYNK_ETHERNET_STM32_WM_VERSION     "BlynkEthernet_STM32_WM v1.2.0"
 #endif
 
 #ifndef BLYNK_INFO_CONNECTION
-  #define BLYNK_INFO_CONNECTION "LAN8742A"
+  #if USING_LAN8720
+    #define BLYNK_INFO_CONNECTION "LAN8720"
+  #else
+    #define BLYNK_INFO_CONNECTION "LAN8742A"
+  #endif  
 #endif
 
 #include <LwIP.h>
