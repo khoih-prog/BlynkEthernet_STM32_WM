@@ -16,14 +16,7 @@
   * [Currently supported Boards](#currently-supported-boards)
   * [Currently supported Ethernet shields/modules](#currently-supported-ethernet-shieldsmodules)
   * [Not supported Boards](#not-supported-boards)
-* [Changelog](#changelog)
-  * [Releases v1.2.1](#releases-v121)
-  * [Releases v1.2.0](#releases-v120)
-  * [Releases v1.1.1](#releases-v111)
-  * [Major Releases v1.1.0](#major-releases-v110)
-  * [Releases v1.0.4](#releases-v104)
-  * [Releases v1.0.3](#releases-v103)
-  * [Releases v1.0.2](#releases-v102)
+* [Changelog](changelog.md)
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
   * [Use Arduino Library Manager](#use-arduino-library-manager)
@@ -117,7 +110,6 @@
     * [5.2. Config Data Saved => Connect to Blynk](#52-config-data-saved--connect-to-blynk)
 * [Debug](#debug)
 * [Troubleshooting](#troubleshooting)
-* [Releases](#releases)
 * [Issues](#issues)
 * [TO DO](#to-do)
 * [DONE](#done)
@@ -206,56 +198,12 @@ These boards are not supported:
 ---
 ---
 
-## Changelog
-
-
-### Releases v1.2.1
-
-1. Add Packages' Patches for **STM32 core v2.0.0** to use LAN8720 with STM32Ethernet and LwIP libraries
-2. Updated and tested with latest **STM32 core v2.0.0**
-
-### Releases v1.2.0
-
-1. Add support to **LAN8720** Ethernet for many **STM32F4** (F407xx, NUCLEO_F429ZI) and **STM32F7** (DISCO_F746NG, NUCLEO_F746ZG, NUCLEO_F756ZG) boards.
-2. Add LAN8720 examples
-3. Add Packages' Patches for STM32 to use LAN8720 with STM32Ethernet and LwIP libraries
-
-### Releases v1.1.1
-
-1. To permit autoreset after configurable timeout if DRD/MRD or non-persistent forced-CP. Check [**Good new feature: Blynk.resetAndEnterConfigPortal() Thanks & question #27**](https://github.com/khoih-prog/Blynk_WM/issues/27)
-
-### Major Releases v1.1.0
-
-1. Fix Config Portal Bug. 
-2. Add functions to control Config Portal from software or Virtual Switches. Check [How to trigger a Config Portal from code #25](https://github.com/khoih-prog/Blynk_WM/issues/25)
-3. Use more efficient [FlashStorage_STM32 Library](https://github.com/khoih-prog/FlashStorage_STM32) to save data to emulaled-EEPROM.
-4. Add support to new [**`EthernetENC library`**](https://github.com/jandrassy/EthernetENC) for ENC28J60.
-
-
-### Releases v1.0.4
-
-1. New ***powerful-yet-simple-to-use feature to enable adding dynamic custom parameters*** from sketch and input using the same Config Portal. Config Portal will be auto-adjusted to match the number of dynamic parameters.
-2. Dynamic custom parameters to be saved ***automatically in EEPROM***.
-3. Permit to input special chars such as ***%*** and ***#*** into data fields.
-4. MultiBlynk Servers and Tokens with Auto(Re)Connect feature.
-
-### Releases v1.0.3
-1. Reduce html and code size for faster Config Portal response. Enhance GUI.
-2. Change default macAddress for boards to avoid macAddress conflict while simultaneously testing multiple boards.
-
-### Releases v1.0.2
-
-1. Fix crashing bug when using dynamic EthernetServer
-2. Enhance examples, fix indentation, update README.md
-
----
----
 
 ## Prerequisites
 
- 1. [`Arduino IDE 1.8.13+` for Arduino](https://www.arduino.cc/en/Main/Software)
- 2. [`Blynk library 0.6.1+`](https://github.com/blynkkk/blynk-library/releases). [![Latest release](https://img.shields.io/github/release/blynkkk/blynk-library.svg)](https://github.com/blynkkk/blynk-library/releases/latest/)
- 3. [`Arduino Core for STM32 v2.0.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
+ 1. [`Arduino IDE 1.8.16+` for Arduino](https://www.arduino.cc/en/Main/Software)
+ 2. [`Blynk library 1.0.1+`](https://github.com/blynkkk/blynk-library/releases). [![Latest release](https://img.shields.io/github/release/blynkkk/blynk-library.svg)](https://github.com/blynkkk/blynk-library/releases/latest/)
+ 3. [`Arduino Core for STM32 v2.1.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
  4. For LAN8720 or built-in LAN8742A Ethernet:
    - [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/STM32Ethernet.svg)](https://github.com/stm32duino/STM32Ethernet/releases/latest)
    - [`LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/LwIP.svg)](https://github.com/stm32duino/LwIP/releases/latest)
@@ -265,14 +213,14 @@ These boards are not supported:
    - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500. [![GitHub release](https://img.shields.io/github/release/adafruit/Ethernet2.svg)](https://github.com/adafruit/Ethernet2/releases/latest)
    - [`Ethernet3 library v1.5.5+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip. [![GitHub release](https://img.shields.io/github/release/sstaub/Ethernet3.svg)](https://github.com/sstaub/Ethernet3/releases/latest)
  6. For ENC28J60 Ethernet:
-   - [`EthernetENC library v2.0.0+`](https://github.com/jandrassy/EthernetENC) for ENC28J60. [![GitHub release](https://img.shields.io/github/release/jandrassy/EthernetENC.svg)](https://github.com/jandrassy/EthernetENC/releases/latest). **New and Better**
-   - [`UIPEthernet library v2.0.9+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60. [![GitHub release](https://img.shields.io/github/release/UIPEthernet/UIPEthernet.svg)](https://github.com/UIPEthernet/UIPEthernet/releases/latest)
- 7. [`EthernetWebServer_STM32 library v1.2.0+`](https://github.com/khoih-prog/EthernetWebServer_STM32). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer_STM32.svg?)](https://www.ardu-badge.com/EthernetWebServer_STM32).
- 8. [`FlashStorage_STM32 library v1.0.1+`](https://github.com/khoih-prog/FlashStorage_STM32). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/FlashStorage_STM32.svg?)](https://www.ardu-badge.com/FlashStorage_STM32).
- 9. [`DoubleResetDetector_Generic library v1.0.3+`](https://github.com/khoih-prog/DoubleResetDetector_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/DoubleResetDetector_Generic.svg?)](https://www.ardu-badge.com/DoubleResetDetector_Generic).
+   - [`EthernetENC library v2.0.1+`](https://github.com/jandrassy/EthernetENC) for ENC28J60. [![GitHub release](https://img.shields.io/github/release/jandrassy/EthernetENC.svg)](https://github.com/jandrassy/EthernetENC/releases/latest). **New and Better**
+   - [`UIPEthernet library v2.0.10+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60. [![GitHub release](https://img.shields.io/github/release/UIPEthernet/UIPEthernet.svg)](https://github.com/UIPEthernet/UIPEthernet/releases/latest)
+ 7. [`EthernetWebServer_STM32 library v1.2.1+`](https://github.com/khoih-prog/EthernetWebServer_STM32). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/EthernetWebServer_STM32.svg?)](https://www.ardu-badge.com/EthernetWebServer_STM32).
+ 8. [`FlashStorage_STM32 library v1.1.0+`](https://github.com/khoih-prog/FlashStorage_STM32). To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/FlashStorage_STM32.svg?)](https://www.ardu-badge.com/FlashStorage_STM32).
+ 9. [`DoubleResetDetector_Generic library v1.7.2+`](https://github.com/khoih-prog/DoubleResetDetector_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/DoubleResetDetector_Generic.svg?)](https://www.ardu-badge.com/DoubleResetDetector_Generic).
 10. [`Functional-VLPP library v1.0.2+`](https://github.com/khoih-prog/functional-vlpp) to use server's lambda function. To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/Functional-Vlpp.svg?)](https://www.ardu-badge.com/Functional-Vlpp)
 
-
+---
 ---
 
 ## Installation
@@ -328,20 +276,18 @@ not just unknown Arduino board type:
 
 #### 1. For STM32 boards to use LAN8720
 
-Already updated and tested with latest **STM32 core v2.0.0**
-
 To use LAN8720 on some STM32 boards 
 
 - **Nucleo-144 (F429ZI, NUCLEO_F746NG, NUCLEO_F746ZG, NUCLEO_F756ZG)**
 - **Discovery (DISCO_F746NG)**
 - **STM32F4 boards (BLACK_F407VE, BLACK_F407VG, BLACK_F407ZE, BLACK_F407ZG, BLACK_F407VE_Mini, DIYMORE_F407VGT, FK407M1)**
 
-you have to copy the files [stm32f4xx_hal_conf_default.h](Packages_Patches/STM32/hardware/stm32/x.yy.zz/system/STM32F4xx) and [stm32f7xx_hal_conf_default.h](Packages_Patches/STM32/hardware/stm32/x.yy.zz/system/STM32F7xx) into STM32 stm32 directory (~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/system) to overwrite the old files.
+you have to copy the files [stm32f4xx_hal_conf_default.h](Packages_Patches/STM32/hardware/stm32/2.1.0/system/STM32F4xx) and [stm32f7xx_hal_conf_default.h](Packages_Patches/STM32/hardware/stm32/2.1.0/system/STM32F7xx) into STM32 stm32 directory (~/.arduino15/packages/STM32/hardware/stm32/2.1.0/system) to overwrite the old files.
 
-Supposing the STM32 stm32 core version is 2.0.0. These files must be copied into the directory:
+Supposing the STM32 stm32 core version is 2.1.0. These files must be copied into the directory:
 
-- `~/.arduino15/packages/STM32/hardware/stm32/2.0.0/system/STM32F4xx/stm32f4xx_hal_conf_default.h` for STM32F4.
-- `~/.arduino15/packages/STM32/hardware/stm32/2.o.0/system/STM32F7xx/stm32f7xx_hal_conf_default.h` for Nucleo-144 STM32F7.
+- `~/.arduino15/packages/STM32/hardware/stm32/2.1.0/system/STM32F4xx/stm32f4xx_hal_conf_default.h` for STM32F4.
+- `~/.arduino15/packages/STM32/hardware/stm32/2.1.0/system/STM32F7xx/stm32f7xx_hal_conf_default.h` for Nucleo-144 STM32F7.
 
 Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz,
 theses files must be copied into the corresponding directory:
@@ -352,18 +298,18 @@ theses files must be copied into the corresponding directory:
 
 #### 2. For STM32 boards to use Serial1
 
-**To use Serial1 on some STM32 boards without Serial1 definition (Nucleo-144 NUCLEO_F767ZI, Nucleo-64 NUCLEO_L053R8, etc.) boards**, you have to copy the files [STM32 variant.h](Packages_Patches/STM32/hardware/stm32/1.9.0) into STM32 stm32 directory (~/.arduino15/packages/STM32/hardware/stm32/1.9.0). You have to modify the files corresponding to your boards, this is just an illustration how to do.
+**To use Serial1 on some STM32 boards without Serial1 definition (Nucleo-144 NUCLEO_F767ZI, Nucleo-64 NUCLEO_L053R8, etc.) boards**, you have to copy the files [STM32 variant.h](Packages_Patches/STM32/hardware/stm32/2.1.0) into STM32 stm32 directory (~/.arduino15/packages/STM32/hardware/stm32/2.1.0). You have to modify the files corresponding to your boards, this is just an illustration how to do.
 
-Supposing the STM32 stm32 core version is 1.9.0. These files must be copied into the directory:
+Supposing the STM32 stm32 core version is 2.1.0. These files must be copied into the directory:
 
-- `~/.arduino15/packages/STM32/hardware/stm32/1.9.0/variants/NUCLEO_F767ZI/variant.h` for Nucleo-144 NUCLEO_F767ZI.
-- `~/.arduino15/packages/STM32/hardware/stm32/1.9.0/variants/NUCLEO_L053R8/variant.h` for Nucleo-64 NUCLEO_L053R8.
+- `~/.arduino15/packages/STM32/hardware/stm32/2.1.0/variants/STM32F7xx/F765Z(G-I)T_F767Z(G-I)T_F777ZIT/NUCLEO_F767ZI/variant.h` for Nucleo-144 NUCLEO_F767ZI.
+- `~/.arduino15/packages/STM32/hardware/stm32/2.1.0/variants/STM32L0xx/L052R(6-8)T_L053R(6-8)T_L063R8T/NUCLEO_L053R8/variant.h` for Nucleo-64 NUCLEO_L053R8.
 
 Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz,
 theses files must be copied into the corresponding directory:
 
-- `~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/variants/NUCLEO_F767ZI/variant.h`
-- `~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/variants/NUCLEO_L053R8/variant.h`
+- `~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/variants/STM32F7xx/F765Z(G-I)T_F767Z(G-I)T_F777ZIT/NUCLEO_F767ZI/variant.h`
+- `~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/variants/STM32L0xx/L052R(6-8)T_L053R(6-8)T_L063R8T/NUCLEO_L053R8/variant.h`
 
 ---
 
@@ -1038,7 +984,7 @@ If no valid config data are stored in EEPROM (data verified by checksum), forced
 
 ```
 Start BI_Ethernet_Blynk on NUCLEO_F767ZI using LAN8742A Ethernet & STM32Ethernet Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d01234
@@ -1661,7 +1607,7 @@ The following is the sample terminal output when running example [BI_Ethernet_Bl
 
 ```
 Start BI_Ethernet_Blynk on NUCLEO_F767ZI using LAN8742A Ethernet & STM32Ethernet Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1709,7 +1655,7 @@ Pubs Topics = Pubs_Topics
 
 ```
 Start BI_Ethernet_Blynk on NUCLEO_F767ZI using LAN8742A Ethernet & STM32Ethernet Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d01234
@@ -1743,7 +1689,7 @@ Pubs Topics = Pubs_Topics
 CP Button Hit. Rebooting
 
 Start BI_Ethernet_Blynk on NUCLEO_F767ZI using LAN8742A Ethernet & STM32Ethernet Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1779,7 +1725,7 @@ Pubs Topics = Pubs_Topics
 Persistent CP Button Hit. Rebooting
 
 Start BI_Ethernet_Blynk on NUCLEO_F767ZI using LAN8742A Ethernet & STM32Ethernet Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1819,7 +1765,7 @@ The following is the sample terminal output when running example [EthernetENC_Bl
 
 ```
 Start EthernetENC_Blynk on NUCLEO_F767ZI using ENC28J60 & EthernetENC Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1867,7 +1813,7 @@ Pubs Topics = Pubs_Topics
 
 ```
 Start EthernetENC_Blynk on NUCLEO_F767ZI using ENC28J60 & EthernetENC Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d01234
@@ -1901,7 +1847,7 @@ Pubs Topics = Pubs_Topics
 CP Button Hit. Rebooting
 
 Start EthernetENC_Blynk on NUCLEO_F767ZI using ENC28J60 & EthernetENC Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1937,7 +1883,7 @@ ClearFlag write = 0xd0d04321
 Persistent CP Button Hit. Rebooting
 
 Start EthernetENC_Blynk on NUCLEO_F767ZI using ENC28J60 & EthernetENC Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -1975,7 +1921,7 @@ FFFFFFFFF FFFFFFFFFF FF[1322491] h:UpdEEPROM
 
 ```
 Start EthernetENC_Blynk on NUCLEO_F767ZI using ENC28J60 & EthernetENC Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2053,7 +1999,7 @@ The following is the sample terminal output when running example [ENC28J60_Blynk
 
 ```
 Start ENC28J60_Blynk on NUCLEO_F767ZI using ENC28J60 & UIPEthernet Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2107,7 +2053,7 @@ BBBBBBBBB
 
 ```
 Start ENC28J60_Blynk on NUCLEO_F767ZI using ENC28J60 & UIPEthernet Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d01234
@@ -2159,7 +2105,7 @@ FFF[233631] h:UpdEEPROM
 CP Button Hit. Rebooting
 
 Start ENC28J60_Blynk on NUCLEO_F767ZI using ENC28J60 & UIPEthernet Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2200,7 +2146,7 @@ ClearFlag write = 0xd0d04321
 Persistent CP Button Hit. Rebooting
 
 Start ENC28J60_Blynk on NUCLEO_F767ZI using ENC28J60 & UIPEthernet Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2247,7 +2193,7 @@ The following is the sample terminal output when running example [W5100_Blynk](e
 
 ```
 Start W5100_Blynk on NUCLEO_F767ZI using W5x00 & EthernetLarge Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2300,7 +2246,7 @@ BBBBBBBBB B
 
 ```
 Start W5100_Blynk on NUCLEO_F767ZI using W5x00 & EthernetLarge Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d01234
@@ -2337,7 +2283,7 @@ Pubs Topics = Pubs_Topics
 CP Button Hit. Rebooting
 
 Start W5100_Blynk on NUCLEO_F767ZI using W5x00 & EthernetLarge Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2374,7 +2320,7 @@ Pubs Topics = Pubs_Topics
 Persistent CP Button Hit. Rebooting
 
 Start W5100_Blynk on NUCLEO_F767ZI using W5x00 & EthernetLarge Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2417,7 +2363,7 @@ The following is the sample terminal output when running example [LAN8720_Ethern
 
 ```
 Start LAN8720_Ethernet_Blynk on BLACK_F407VE using LAN8720 Ethernet & STM32Ethernet Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d01234
@@ -2451,7 +2397,7 @@ FF[178269] h:UpdEEPROM
 
 ```
 Start LAN8720_Ethernet_Blynk on BLACK_F407VE using LAN8720 Ethernet & STM32Ethernet Library
-BlynkEthernet_STM32_WM v1.2.1
+BlynkEthernet_STM32_WM v1.2.2
 
 EEPROM size = 16384, start = 0
 Flag read = 0xd0d04321
@@ -2529,61 +2475,6 @@ Sometimes, the library will only work if you update the board core to the latest
 ---
 ---
 
-## Releases
-
-### Releases v1.2.1
-
-1. Add Packages' Patches for **STM32 core v2.0.0** to use LAN8720 with STM32Ethernet and LwIP libraries
-2. Updated and tested with latest **STM32 core v2.0.0**
-
-### Releases v1.2.0
-
-1. Add support to **LAN8720** Ethernet for many **STM32F4** (F407xx, NUCLEO_F429ZI) and **STM32F7** (DISCO_F746NG, NUCLEO_F746ZG, NUCLEO_F756ZG) boards.
-2. Add LAN8720 examples
-3. Add Packages' Patches for STM32 to use LAN8720 with STM32Ethernet and LwIP libraries
-
-### Releases v1.1.1
-
-1. To permit autoreset after configurable timeout if DRD/MRD or non-persistent forced-CP. Check [**Good new feature: Blynk.resetAndEnterConfigPortal() Thanks & question #27**](https://github.com/khoih-prog/Blynk_WM/issues/27)
-
-### Major Releases v1.1.0
-
-1. Fix Config Portal Bug. 
-2. Add functions to control Config Portal from software or Virtual Switches. Check [How to trigger a Config Portal from code #25](https://github.com/khoih-prog/Blynk_WM/issues/25)
-3. Use more efficient [FlashStorage_STM32 Library](https://github.com/khoih-prog/FlashStorage_STM32) to save data to emulaled-EEPROM.
-4. Add support to new [**`EthernetENC library`**](https://github.com/jandrassy/EthernetENC) for ENC28J60.
-
-
-### Releases v1.0.4
-
-1. New ***powerful-yet-simple-to-use feature to enable adding dynamic custom parameters*** from sketch and input using the same Config Portal. Config Portal will be auto-adjusted to match the number of dynamic parameters.
-2. Dynamic custom parameters to be saved ***automatically in EEPROM***.
-3. Permit to input special chars such as ***%*** and ***#*** into data fields.
-4. MultiBlynk Servers and Tokens with Auto(Re)Connect feature.
-
-### Releases v1.0.3
-1. Reduce html and code size for faster Config Portal response. Enhance GUI.
-2. Change default macAddress for boards to avoid macAddress conflict while simultaneously testing multiple boards.
-
-### Releases v1.0.2
-
-1. Fix crashing bug when using dynamic EthernetServer
-2. Enhance examples, fix indentation, update README.md
-
-### Releases v1.0.1
-
-***New in this version***
-
-1. Fix hanging bug in STM32 boards with built-in Ethernet LAN8742A.
-
-### Releases v1.0.0
-
-***New in this version***
-
-1. Add support to STM32 boards with built-in Ethernet LAN8742A, ENC28J60 or W5x00 Ethernet shields 
-
----
----
 
 ### Issues
 

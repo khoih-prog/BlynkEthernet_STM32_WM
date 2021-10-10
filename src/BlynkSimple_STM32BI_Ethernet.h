@@ -8,7 +8,7 @@
   Built by Khoi Hoang https://github.com/khoih-prog/BlynkEthernet_STM32_WM
   Licensed under MIT license
 
-  Version: 1.2.1
+  Version: 1.2.2
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -21,6 +21,7 @@
   1.1.1   K Hoang      31/01/2021 To permit autoreset after timeout if DRD/MRD or non-persistent forced-CP
   1.2.0   K Hoang      22/04/2021 Add support to LAN8720 using STM32F4 or STM32F7
   1.2.1   K Hoang      22/04/2021 Add Packages' Patches for STM32 core v2.0.0 to use LAN8720
+  1.2.2   K Hoang      09/10/2021 Update `platform.ini` and `library.json` 
  *****************************************************************************************************************************/
 
 #pragma once
@@ -40,7 +41,7 @@
 #endif
 
 #ifndef BLYNK_ETHERNET_WM_VERSION
-  #define BLYNK_ETHERNET_STM32_WM_VERSION     "BlynkEthernet_STM32_WM v1.2.1"
+  #define BLYNK_ETHERNET_STM32_WM_VERSION     "BlynkEthernet_STM32_WM v1.2.2"
 #endif
 
 #ifndef BLYNK_INFO_CONNECTION
