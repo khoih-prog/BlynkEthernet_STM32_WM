@@ -12,15 +12,21 @@
 #define defines_h
 
 #if ( defined(ARDUINO_BLACK_F407VE) || defined(ARDUINO_BLACK_F407VG) || defined(ARDUINO_BLACK_F407ZE) || defined(ARDUINO_BLACK_F407ZG)  || \
-      defined(ARDUINO_BLUE_F407VE_Mini) || defined(ARDUINO_DIYMORE_F407VGT) || defined(ARDUINO_FK407M1) || defined(ARDUINO_NUCLEO_F429ZI) || \
-      defined(ARDUINO_DISCO_F746NG) || defined(ARDUINO_NUCLEO_F746ZG) || defined(ARDUINO_NUCLEO_F756ZG) || defined(ARDUINO_NUCLEO_H743ZI) )
+      defined(ARDUINO_BLUE_F407VE_Mini) || defined(ARDUINO_DIYMORE_F407VGT) || defined(ARDUINO_FK407M1) || defined(ARDUINO_VCCGND_F407ZG_MINI) || \
+      defined(ARDUINO_GENERIC_F407VETX) || defined(ARDUINO_GENERIC_F407VGTX) || defined(ARDUINO_GENERIC_F407ZETX) || defined(ARDUINO_GENERIC_F407ZGTX) || \
+      defined(ARDUINO_GENERIC_F417VETX) || defined(ARDUINO_GENERIC_F417VGTX) || defined(ARDUINO_GENERIC_F417ZETX) || defined(ARDUINO_GENERIC_F417ZGTX) || \
+      defined(ARDUINO_GENERIC_F427ZGTX) || defined(ARDUINO_GENERIC_F427ZITX) || defined(ARDUINO_GENERIC_F429ZETX) || defined(ARDUINO_GENERIC_F429ZGTX) || \
+      defined(ARDUINO_GENERIC_F429ZGYX) || defined(ARDUINO_GENERIC_F429ZITX) || defined(ARDUINO_GENERIC_F429ZIYX) || defined(ARDUINO_GENERIC_F437ZGTX) || \
+      defined(ARDUINO_GENERIC_F437ZITX) || defined(ARDUINO_GENERIC_F439ZGTX) || defined(ARDUINO_GENERIC_F439ZITX) || defined(ARDUINO_GENERIC_F439ZGYX) || \
+      defined(ARDUINO_GENERIC_F439ZIYX) || defined(ARDUINO_DISCO_F746NG)     || defined(ARDUINO_NUCLEO_F746ZG)    || defined(ARDUINO_NUCLEO_F756ZG)    || \
+      defined(ARDUINO_NUCLEO_H743ZI) )
   #if defined(ETHERNET_USE_STM32)
     #undef ETHERNET_USE_STM32
   #endif
   #define ETHERNET_USE_STM32         true
   #define USE_DYNAMIC_PARAMETERS      true
 #else
-  #error This code is designed to run on some STM32F407XX NUCLEO-F429ZI, STM32F746 and STM32F756 platform! Please check your Tools->Board setting.
+  #error This code is designed to run on some STM32F4X7XX, STM32F4X9XX NUCLEO-F429ZI, STM32F746 and STM32F756 platform! Please check your Tools->Board setting.
 #endif
 
 // To suppress boolean warnings of old libraries
