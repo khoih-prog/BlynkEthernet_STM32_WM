@@ -12,7 +12,7 @@
   "repository":
   {
     "type": "git",
-    "url": "//https://github.com/khoih-prog/BlynkEthernet_STM32_WM"
+    "url": "https://github.com/khoih-prog/BlynkEthernet_STM32_WM"
   },
   "homepage": "https://github.com/khoih-prog/BlynkEthernet_STM32_WM",
   "export": {
@@ -45,19 +45,19 @@
     {
       "owner": "khoih-prog",
       "name": "EthernetWebServer_STM32",
-      "version": "^1.2.0",
+      "version": "^1.3.3",
       "platforms": ["ststm32", "stm32"]
     },
     {
       "owner": "khoih-prog",
       "name": "DoubleResetDetector_Generic",
-      "version": "^1.7.2",
+      "version": "^1.8.0",
       "platforms": ["*"]
     },
     {
       "owner": "khoih-prog",
       "name": "FlashStorage_STM32",
-      "version": "^1.1.0",
+      "version": "^1.2.0",
       "platforms": ["ststm32", "stm32"]
     },
     {
